@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>A' Famosa</title>
+</head>
+<body>
+
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+    
+    <div class="font-controls" style="float: right; margin-right: 20px;">
+        <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+        <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+    </div> 
+    <div class="sharethis-sticky-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0583686267000198d4642&product=sticky-share-buttons&source=platform" async="async"></script>
+
+    <div class="hNc_details">
+        <header class="hNc_details-title">
+            <h1>A' Famosa</h1>
+        </header>
+
+        <div class="hNc_details_gallery">
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/A_Famosa_1.jpeg" alt="A Famosa 1">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/A_Famosa_2.jpeg" alt="A Famosa 2">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/A_Famosa_3.jpeg" alt="A Famosa 3">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/A_Famosa_4.jpeg" alt="A Famosa 4">
+            </div>
+        </div>    
+         
+        <section class="hNc_overview_section">
+            <div class="hNc_overview">
+                <h2>Overview</h2>
+                <p id="overview-text">
+                    A' Famosa, located in Melaka, Malaysia, is one of Southeast Asia's oldest surviving European architectural remains. Originally built by the Portuguese in 1511 following their conquest of Melaka, the fortress was designed to protect their strategic trading port from foreign invaders. The structure once spanned an impressive area, but today, only the iconic gateway, Porta de Santiago, remains standing. This gateway serves as a poignant reminder of Melaka's rich colonial history, which includes subsequent occupations by the Dutch and the British. A Famosa is not just a historical landmark but also a symbol of the city's cultural fusion, blending Asian and European influences over the centuries. It continues to attract visitors who are drawn to its historical significance and the picturesque backdrop it provides in modern-day Melaka.                </p>
+                <button id="show-more-btn" onclick="toggleText(this)">Show More</button>
+            </div>
+
+            
+
+            <div class="hNc_location">
+                <h2>Location Details</h2>
+                <p><strong>Address: </strong>Jln Parameswara, Banda Hilir, 78000 Alor Gajah, Melaka</p>
+                <p><strong>Opening Hours: </strong>24hours</p>
+                <a href="https://en.wikipedia.org/wiki/A_Famosa" target="_blank" class="visit-website">Visit Website</a>
+                <a href="https://maps.app.goo.gl/MqCfCvcWekbpgJYT9" target="_blank" class="show-in-map">Show in Map</a>
+            </div>
+        </section>
+    </div>
+
+    <section class="hNc_timeline_section">
+        <h2>Historical Timeline</h2>
+        <div class="hNc_timeline">
+            <div class="hNc_timeline_event">
+                <div class="hNc_timeline_date">1511</div>
+                <div class="hNc_timeline_content">
+                    <h3>A' Famosa Built by the Portuguese</h3>
+                    <p>A' Famosa was constructed following the Portuguese conquest of Melaka.</p>
+                </div>
+            </div>
+            <div class="hNc_timeline_event">
+                <div class="hNc_timeline_date">1641</div>
+                <div class="hNc_timeline_content">
+                    <h3>Captured by the Dutch</h3>
+                    <p>The Dutch took control of A' Famosa and the surrounding region.</p>
+                </div>
+            </div>
+            <div class="hNc_timeline_event">
+                <div class="hNc_timeline_date">1807</div>
+                <div class="hNc_timeline_content">
+                    <h3>Destruction by the British</h3>
+                    <p>Most of the fortress was destroyed by the British, leaving only Porta de Santiago.</p>
+                </div>
+            </div>
+            <div class="hNc_timeline_event">
+                <div class="hNc_timeline_date">Present Day</div>
+                <div class="hNc_timeline_content">
+                    <h3>Preserved as a Historical Landmark</h3>
+                    <p>A' Famosa stands as a significant reminder of Melaka's colonial past.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+    <div class="hNc_quiz_section">
+        <h2>Test Your Knowledge</h2>
+        <div id="quiz">
+            <p>In which year was A' Famosa constructed?</p>
+            <button onclick="checkAnswer(1, 'wrong')">1603</button>
+            <button onclick="checkAnswer(1, 'wrong')">1757</button>
+            <button onclick="checkAnswer(1, 'wrong')">1805</button>
+            <button onclick="checkAnswer(1, 'correct')">1511</button>
+        </div>
+        <div id="quiz-result"></div>
+    </div>
+    
+    <script>
+        function checkAnswer(question, answer) {
+            let result = document.getElementById('quiz-result');
+            if (answer === 'correct') {
+                result.innerHTML = '<p>Correct! It was constructed in year 1511.</p>';
+            } else {
+                result.innerHTML = '<p>Incorrect. Try again!</p>';
+            }
+        }
+    </script>
+
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+    
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

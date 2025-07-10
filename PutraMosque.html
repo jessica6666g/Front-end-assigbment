@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Putra Mosque</title>
+</head>
+<body>
+
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+
+    <div class="hNc_details">
+        <div class="font-controls" style="float: right; margin-right: 20px;">
+            <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+            <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+        </div> 
+        
+        <header class="hNc_details-title">
+            <h1>Putra Mosque</h1>
+        </header>
+
+        <div class="hNc_details_gallery">
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/Putra Mosque 1.jpg" alt="Putra Mosque 1">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/Putra Mosque 2.jpg" alt="Putra Mosque 2">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/Putra Mosque 3.jpg" alt="Putra Mosque 3">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/Putra Mosque 4.jpg" alt="Putra Mosque 4">
+            </div>
+        </div>    
+         
+        <section class="hNc_overview_section">
+            <div class="hNc_overview">
+                <h2>Overview</h2>
+                <p id="overview-text">
+                    The Putra Mosque, located in Putrajaya, Malaysia, is one of the country’s most iconic and picturesque landmarks. Completed in 1999, the mosque is an architectural masterpiece that combines elements of traditional Islamic design with modern influences. Its pink granite façade, topped by a majestic rose-tinted dome, and the 116-meter-tall minaret, which is the tallest in Southeast Asia, make it a striking symbol of Malaysia's Islamic heritage. The mosque's design draws inspiration from Persian, Moorish, and Malay architecture, featuring intricate carvings, beautiful arches, and a serene lakeside setting.
+                </br></br>
+                    Situated on the edge of Putrajaya Lake, the Putra Mosque can accommodate up to 15,000 worshippers at a time. It is not only a place of worship but also a popular tourist attraction, drawing visitors for its serene beauty, architectural grandeur, and the tranquil atmosphere it provides. The mosque’s interior is equally impressive, with its spacious prayer hall, ornate chandeliers, and beautifully decorated ceilings, offering a peaceful space for reflection and prayer.                </p>
+                <button id="show-more-btn" onclick="toggleText(this)">Show More</button>
+            </div>
+
+            <div class="hNc_location">
+                <h2>Location Details</h2>
+                <p>Address: Persiaran Persekutuan, Presint 1, 62502 Putrajaya, Wilayah Persekutuan Putrajaya</p>
+                <p>Contact: 03-8888 5678</p>
+                <a href="https://www.malaysia.travel/explore/putra-mosque" target="_blank" class="visit-website">Visit Website</a>
+                <a href="https://maps.app.goo.gl/Fj8aNKiTh8yKxrZv5" target="_blank" class="show-in-map">Show in Map</a>
+            </div>
+        </section>
+    </div>
+
+    <div class="hNc_quiz_section">
+        <h2>Test Your Knowledge</h2>
+        <div id="quiz">
+            <p>What is the main material used in the construction of the Putra Mosque’s dome?</p>
+            <button onclick="checkAnswer(1, 'wrong')">Glass</button>
+            <button onclick="checkAnswer(1, 'wrong')">Marble</button>
+            <button onclick="checkAnswer(1, 'correct')">Rose-tinted granite</button>
+            
+        </div>
+        <div id="quiz-result"></div>
+        
+    </div>
+    
+    <script>
+        function checkAnswer(question, answer) {
+            let result = document.getElementById('quiz-result');
+            if (answer === 'correct') {
+                result.innerHTML = '<p>Correct! The answer is rose-tinted granite.</p>';
+            } else {
+                result.innerHTML = '<p>Incorrect. Try again!</p>';
+            }
+        }
+    </script>
+
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

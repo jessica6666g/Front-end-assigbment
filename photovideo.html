@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Marvelous Malaysia</title>
+    <link rel="stylesheet" href="XinEn/gallery/gallery.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <!-- Main Navigation Header -->
+    <section class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html'>Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close"><i class="fa fa-close"></i></div>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="heritage&culture.html">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html">Shopping</a></li>
+                        <li><a href="travelplan.html">Travel Planning</a></li>
+                        <li><a href="photovideo.html" class="active">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p>33.02 °C</p>
+                </div>
+                <div class="bar"><i class="fa fa-bars"></i></div>
+            </nav> 
+        </div>
+    </section>
+
+    <!-- Site Header -->
+    <header class="site-header">  
+        <nav class="site-nav">  
+            <div class="upload-buttons">
+                <button id="uploadBtn"><i class="fas fa-camera"></i> Upload Photo</button>
+                <button id="uploadVideoBtn"><i class="fas fa-video"></i> Upload Video</button>
+            </div>
+            <div class="social-sharing">
+                <button class="social-btn facebook" onclick="shareOnFacebook()">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+                <button class="social-btn twitter" onclick="shareOnTwitter()">
+                    <i class="fab fa-twitter"></i> Twitter
+                </button>
+                <button class="social-btn whatsapp" onclick="shareOnWhatsApp()">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+        </nav>  
+    </header>
+
+    <!-- Main Gallery Content -->
+    <main class="gallery-main">
+        <div class="container">
+            <!-- Gallery Header -->
+            <section class="gallery-header">
+                <div class="header-content">
+                    <div class="header-text">
+                        <h1>Malaysia Travel Gallery</h1>
+                        <p>Explore breathtaking photos and videos from across Malaysia</p>
+                        <div class="gallery-stats">
+                            <div class="stat">
+                                <span class="stat-number" id="totalPhotos">0</span>
+                                <span class="stat-label">Photos</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" id="totalVideos">0</span>
+                                <span class="stat-label">Videos</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-number" id="totalViews">0</span>
+                                <span class="stat-label">Total Views</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-showcase">
+                        <div class="showcase-image">
+                            <img id="featuredImage" src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=500&h=300&fit=crop" alt="Featured">
+                            <div class="showcase-overlay">
+                                <h3>Featured Content</h3>
+                                <p>Discover Malaysia's Beauty</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Grid with Search and Filters Inside -->
+            <section class="gallery-section">
+                <!-- Content Type Tabs -->
+                <div class="content-type-tabs">
+                    <button class="content-tab active" data-type="all">
+                        <i class="fas fa-th"></i> All Content
+                        <span class="count" id="allCount">0</span>
+                    </button>
+                    <button class="content-tab" data-type="photo">
+                        <i class="fas fa-camera"></i> Photos
+                        <span class="count" id="photoCount">0</span>
+                    </button>
+                    <button class="content-tab" data-type="video">
+                        <i class="fas fa-video"></i> Videos
+                        <span class="count" id="videoCount">0</span>
+                    </button>
+                </div>
+
+                <!-- Search Bar and Filters Inside Content Box -->
+                <div class="gallery-search-container">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search photos and videos...">
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="nature">Nature</button>
+                            <button class="filter-btn" data-filter="culture">Culture</button>
+                            <button class="filter-btn" data-filter="adventure">Adventure</button>
+                            <button class="filter-btn" data-filter="food">Food</button>
+                        </div>
+                        
+                        <div class="sort-section">
+                            <select id="sortSelect">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="views">Most Viewed</option>
+                                <option value="likes">Most Liked</option>
+                                <option value="title">By Title</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Grid -->
+                <div id="galleryGrid" class="gallery-grid">
+                    <!-- User uploaded content will be dynamically inserted here -->
+                </div>
+
+                <!-- Default Demo Content -->
+                <div id="defaultGallery" class="gallery-grid">
+                    <!-- Default content will be loaded here -->
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-section">
+                    <button id="loadMoreBtn" class="btn-load-more">
+                        <i class="fas fa-plus"></i> Load More Content
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Enhanced Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header" id="uploadModalHeader">
+                <h2 id="uploadModalTitle"><i class="fas fa-upload"></i> Upload Content</h2>
+                <span class="close">&times;</span>
+            </div>
+            <form id="uploadForm" class="upload-form">
+                <div class="error" id="uploadError"></div>
+                
+                <!-- Upload Type Tabs -->
+                <div class="upload-tabs">
+                    <button type="button" class="upload-tab active" data-type="photo">
+                        <i class="fas fa-camera"></i> Photo
+                    </button>
+                    <button type="button" class="upload-tab" data-type="video">
+                        <i class="fas fa-video"></i> Video
+                    </button>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag & Drop or Click to Upload</h3>
+                        <p id="uploadHint">Supports JPG, PNG, GIF (Max 5MB)</p>
+                        <input type="file" id="photoFile" accept="image/*" style="display: none;">
+                    </div>
+                    <div id="imagePreview" class="image-preview" style="display: none;">
+                        <img id="previewImg" src="" alt="Preview" style="display: none;">
+                        <video id="previewVideo" controls style="display: none;"></video>
+                        <button type="button" id="removePreview" class="remove-preview">×</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="photoTitle"><i class="fas fa-heading"></i> <span id="titleLabel">Photo Title</span></label>
+                        <input type="text" id="photoTitle" required placeholder="Enter title">
+                    </div>
+                    <div class="form-group">
+                        <label for="photoCategory"><i class="fas fa-tag"></i> Category</label>
+                        <select id="photoCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="nature">Nature</option>
+                            <option value="culture">Culture</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="food">Food</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="photoDescription"><i class="fas fa-align-left"></i> Description</label>
+                    <textarea id="photoDescription" rows="3" placeholder="Describe your content..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="photoLocation"><i class="fas fa-map-marker-alt"></i> Location</label>
+                    <input type="text" id="photoLocation" placeholder="Where was this taken?">
+                </div>
+
+                <div class="form-group">
+                    <label for="photoTags"><i class="fas fa-hashtag"></i> Tags</label>
+                    <input type="text" id="photoTags" placeholder="malaysia, travel, beautiful">
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel">Cancel</button>
+                    <button type="submit" class="btn-upload" id="uploadSubmitBtn">
+                        <i class="fas fa-upload"></i> <span id="uploadButtonText">Upload Photo</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Enhanced Photo/Video Detail Modal -->
+    <div id="photoModal" class="modal photo-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header" id="photoModalHeader">
+                <h2 id="modalPhotoTitle"></h2>
+                <div class="photo-actions">
+                    <button id="likePhoto" class="action-btn"><i class="fas fa-heart"></i> <span id="likeCount">0</span></button>
+                    <button id="sharePhoto" class="action-btn"><i class="fas fa-share"></i> Share</button>
+                    <span class="close">&times;</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="photo-container">
+                    <button class="nav-btn prev-btn" id="prevPhoto"><i class="fas fa-chevron-left"></i></button>
+                    <img id="modalImage" src="" alt="" style="display: none;">
+                    <video id="modalVideo" controls style="display: none;"></video>
+                    <button class="nav-btn next-btn" id="nextPhoto"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="photo-info">
+                    <div class="photo-meta">
+                        <span id="modalPhotoDate"><i class="fas fa-calendar"></i> </span>
+                        <span id="modalPhotoLocation"><i class="fas fa-map-marker-alt"></i> </span>
+                        <span id="modalPhotoViews"><i class="fas fa-eye"></i> <span id="viewCount">0</span> views</span>
+                    </div>
+                    <div id="modalPhotoDescription" class="photo-description"></div>
+                    <div id="modalPhotoTags" class="photo-tags"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; Marvelous Malaysia 2024. All rights reserved.</p>
+    </footer>
+
+    <script src="gallery.js"></script>
+</body>
+</html>

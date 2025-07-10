@@ -1,0 +1,220 @@
+body {
+    margin: 0px;
+    padding-bottom: 50px;
+    background: linear-gradient(to right, mistyrose, seashell, honeydew);
+}
+
+.header {
+    margin: 0;
+    height: 85vh;
+    font-size: 6vw;
+    min-height: 40vh;
+    text-align: center;
+    background-size: cover;
+    background-image: url("Background2.png");
+}
+
+.header h1 {
+    font-size: 100%;
+    margin-top: 110px;
+    color: firebrick;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.header h2 {
+    font-size: 66.7%;
+    margin-top: 20px;
+    color: firebrick;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.header span {
+    height: 15%;
+    width: 12.5%;
+    opacity: 0.60;
+    display: flex;
+    margin: 20px auto 0;
+    border-radius: 50px;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.header span a {
+    font-size: 1.8vw;
+    color: firebrick;
+    font-family: "Acme";
+    text-decoration: none;
+}
+
+.navigation {
+    margin: 0;
+    height: 8%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    background-color: black;
+    justify-content: space-between;
+}
+
+.navigation a {
+    font-size: 1.2vw;
+    font-family: "Acme";
+    color: ghostwhite;
+    text-decoration: none;
+}
+
+.navigation-list {
+    display: flex;
+    max-height: 100%;
+    align-items: center;
+}
+
+.navigation-list a {
+    margin: 0 15px;
+}
+
+#sidebar {
+    gap : 0;
+    top: 250px;
+    left: 10px;
+    z-index: 1;
+    display: flex;
+    position: fixed;
+    border-radius: 10px;
+    flex-direction: column;
+}
+
+.fa {
+    width: 60px;
+    padding: 15px;
+    font-size: 30px;
+    text-align: center;
+    text-decoration: none;
+}
+  
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-facebook {
+    color: white;
+    background: #3B5998;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.fa-whatsapp {
+    color: white;
+    background: #25D366;
+}
+
+.fa-youtube {
+    color: white;
+    background: #FF0000;
+}
+  
+.fa-twitter {
+    color: white;
+    background: #55ACEE;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.fa-heart {
+    width: 40px;
+    right: 7.5px;
+    bottom: 7.5px;
+    padding: 10px;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    position: absolute;
+    border-radius: 50%;
+    text-align: center;
+    background: black;
+    text-decoration: none;
+}
+
+.favourite {
+    color: red;
+    background: linear-gradient(to right, mistyrose, white);
+}
+
+.destinations {
+    text-align: center;
+}
+
+.destinations-list {
+    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    justify-content: space-around;
+}
+
+.destinations-content img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 600px) {
+    .destinations-content {
+        flex: 1 1 30%;
+    }
+}
+
+section {
+    width: 80%;
+    padding: 20px;
+    margin: 40px auto;
+    position: relative;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 240, 0.2);
+}
+
+section h2, h4, h5, p, .content-list b, span {
+    color: navy;
+    font-family: "Acme";
+}
+
+.content-list li {
+    margin-bottom: 10px;
+}
+
+footer {
+    bottom: 0;
+    opacity: 0;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    position: fixed;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    background-color: black;
+    transition: opacity 0.3s ease;
+}
+
+footer.show {
+    opacity: 1;
+}
+
+footer p, footer div {
+    margin: 0;
+}
+
+footer p {
+    font-size: 18px;
+    color: ghostwhite;
+}
+
+footer i {
+    margin: 0 10px;
+    color: ghostwhite;
+}
+
+
+

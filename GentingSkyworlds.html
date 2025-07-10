@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Genting SkyWorlds Theme Park</title>
+</head>
+<body>
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+
+    <div class="aNe_details" style="background-image:url(Alicia/Images/gsw-image-gallery.jpg)">
+        <div class="aNe_details_text">
+            <h1>Genting SkyWorlds Theme Park</h1>
+        </div>
+    </div>
+    
+    <div class="font-controls" style="float: right; margin-right: 20px;">
+        <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+        <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+    </div> 
+    
+    <div class="aNe_attraction_overview_section">
+        <div class="aNe_attraction_overview">
+            <h2>Overview</h2>
+            <p id="overview-text">
+                Genting SkyWorlds, located in Genting Highlands, Malaysia, is an expansive and innovative theme park that offers a unique blend of immersive experiences and world-class attractions. Opened in 2022, this outdoor park is part of the Genting Highlands resort and is set against the backdrop of the lush mountains, providing visitors with not only thrilling rides but also stunning natural scenery. The park is divided into several themed zones, each inspired by popular films and franchises, offering a cinematic experience that transports guests into fantastical worlds.
+                </br></br>
+                Genting SkyWorlds features a wide range of attractions, from high-speed roller coasters and 3D interactive rides to family-friendly carousels and play areas. Notable themed zones include the Andromeda Base, an intergalactic-themed area with futuristic rides, and Central Park, which captures the vibrant essence of New York City. The park also offers dining and shopping experiences tailored to each theme, enhancing the overall immersion. With its cutting-edge attractions and diverse entertainment offerings, Genting SkyWorlds has quickly become a must-visit destination for families, thrill-seekers, and movie fans alike.
+            </p>
+            <button id="show-more-btn" onclick="toggleText(this)">Show More</button>
+        </div>
+
+        <div class="aNe_attraction_overview_highlights">
+            <h2>Highlights</h2>
+            <ul>
+                <li><b>Themed Zones:</b> Features several immersive zones inspired by popular films and franchises, such as Andromeda Base and Central Park.</li>
+                <li><b>Thrilling Rides:</b> Offers high-speed roller coasters, 3D interactive rides, and other adrenaline-pumping attractions.</li>
+                <li><b>Family-Friendly Attractions:</b> Includes carousels, play areas, and rides suitable for younger children and families.</li>
+                <li><b>Stunning Scenery:</b> Set against the backdrop of the Genting Highlands, providing breathtaking mountain views.</li>
+                <li><b>Cinematic Experiences:</b> Incorporates cutting-edge technology and storytelling to create an engaging, movie-themed environment.</li>
+                <li><b>Dining and Shopping:</b> Provides themed dining outlets and retail shops that complement the park’s immersive zones.</li>
+            </ul>
+        </div>
+
+        <div class="aNe_attraction_overview_location">
+            <h2>Location & Contact</h2>
+            <p>Address: Resorts World, Genting SkyWorlds, 69000 Genting Highlands, Pahang</p>
+            <p>Contact: 019-201 6286</p>
+            <a href="https://www.gentingskyworlds.com/" target="_blank" class="visit-website">Visit Website</a>
+            <a href="https://maps.app.goo.gl/PcXVzchVyKDRrbGn8" target="_blank" class="show-in-map">Show in Map</a>
+        </div>
+    </div>
+
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

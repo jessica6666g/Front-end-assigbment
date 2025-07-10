@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Mount Kinabalu</title>
+</head>
+<body>
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+
+    <div class="aNe_details" style="background-image:url(https://www.malaysia.travel/webroot/articles/peekintomalaysia/hero_mountkinabalu.jpg)">
+        <div class="aNe_details_text">
+            <h1>Mount Kinabalu</h1>
+        </div>
+    </div>
+
+    <div class="font-controls" style="float: right; margin-right: 20px;">
+        <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+        <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+    </div> 
+    
+    <div class="aNe_attraction_overview_section">
+        <div class="aNe_attraction_overview">
+            <h2>Overview</h2>
+            <p id="overview-text">
+                Mount Kinabalu, located in Sabah, Malaysia, is one of Southeast Asia’s highest peaks, standing at 4,095 meters above sea level. As part of the UNESCO World Heritage Site of Kinabalu Park, this iconic mountain is renowned for its rich biodiversity, featuring thousands of plant species, hundreds of birds, and numerous mammals, many of which are endemic to the region. The mountain is a sacred site for the local Kadazan-Dusun people, who believe it to be the resting place of spirits. Climbing Mount Kinabalu is a popular activity for both local and international tourists, offering a challenging but rewarding experience with breathtaking views from the summit, especially at sunrise.
+                </br></br>
+                Mount Kinabalu is not only a destination for avid climbers but also for nature enthusiasts who come to explore its diverse ecosystems, from lush tropical rainforests at the base to alpine meadows at higher elevations. The mountain’s trails are well-maintained, making it accessible for climbers of various skill levels, though reaching the peak still requires physical endurance and determination. Beyond the climb, visitors can also enjoy the natural beauty of Kinabalu Park, with its hot springs, botanical gardens, and wildlife, making Mount Kinabalu a must-visit for those seeking both adventure and an intimate connection with nature.
+            </p>
+            <button id="show-more-btn" onclick="toggleText(this)">Show More</button>
+        </div>
+
+        <div class="aNe_attraction_overview_highlights">
+            <h2>Highlights</h2>
+            <ul>
+                <li><b>Highest Peak in Southeast Asia</b> Stands at 4,095 meters above sea level, offering a challenging and rewarding climb.</li>
+                <li><b>UNESCO World Heritage Site:</b> Part of Kinabalu Park, recognized for its exceptional biodiversity and conservation efforts.</li>
+                <li><b>Rich Biodiversity:</b> Home to thousands of plant species, hundreds of birds, and unique wildlife, many of which are endemic to the region.</li>
+                <li><b>Cultural Significance:</b> A sacred site for the local Kadazan-Dusun people, believed to be the resting place of spirits.</li>
+            </ul>
+        </div>
+
+        <div class="aNe_attraction_overview_location">
+            <h2>Coordinate & Height</h2>
+            <p>Coordinate: 06°04′30″N 116°33′31″E﻿ / ﻿6.07500°N 116.55861°E</p>
+            <p>Height: 4095 meters</p>
+            <a href="https://www.mountkinabalu.com/" target="_blank" class="visit-website">Visit Website</a>
+            <a href="https://maps.app.goo.gl/fRzj5YFNJEio9QEw9" target="_blank" class="show-in-map">Show in Map</a>
+        </div>
+    </div>
+
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

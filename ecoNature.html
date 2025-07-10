@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Eco & Nature in Malaysia</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+        <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+        <link rel="stylesheet" href="Owen/newStyles.css">
+        <link rel="stylesheet" href="Owen/slides.css">
+
+        <script src="Owen/favourites.js"></script>
+        <script src="Owen/cookies.js"></script>
+    </head>
+
+    <body id="body">
+        <div id="fb-root"></div>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v20.0" nonce="IFhkNtqD"></script>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+        <header class="header">
+            <div class="navigation">
+                <a href="#body">Marvelous Malaysia</a>
+                <div class="navigation-list">
+                    <a href="index.html">Home</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="photovideo.html">Gallery</a>
+                    <a href="travelplan.html">Travel Plans</a>
+                </div>
+            </div>
+            <h1>Travel Destinations</h1>
+            <h2>Malaysia's Eco & Nature</h2>
+            <span><a href="#intro">Learn More</a></span>
+        </header>
+
+        <div id="sidebar">
+            <div class="fb-share-button" data-href="https://marvelousmalaysia.azurewebsites.net/" data-layout="" data-size="">
+                <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fmarvelousmalaysia.azurewebsites.net%2F&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore fa fa-facebook"></a>
+            </div>
+            <a href="https://web.whatsapp.com/" class="fa fa-whatsapp"></a>
+            <a href="https://www.youtube.com/" class="fa fa-youtube"></a>
+            <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="fa fa-twitter" data-show-count="false"></a>
+        </div>
+
+        <section class="destinations">
+            <h2>Visit Malaysia's Other Travel Destinations</h2>
+            <div class="destinations-list">
+                <div class="destinations-content">
+                    <a href="heritage&culture.html"><img src="Owen/Heritage&Culture.jpg" alt="pic1"></a><br>
+                    <h4>Heritage & Culture</h4>
+                </div>
+
+                <div class="destinations-content">
+                    <a href="adventure&entertainment.html"><img src="Owen/Adventure.jpg" alt="pic2"></a><br>
+                    <h4>Adventure & Entertainment</h4>
+                </div>
+
+                <div class="destinations-content">
+                    <a href="shopPing2.html"><img src="Owen/Gurney/GP2.jpg" alt="pic3"></a><br>
+                    <h4>Shopping</h4>
+                </div>
+            </div>
+        </section>
+
+        <section id="intro">
+            <h2>Explore Malaysia's Natural Beauty</h2>
+            <p>
+                Malaysia, a vibrant and diverse country in Southeast Asia, is a paradise for nature lovers. 
+                From dense rainforests teeming with wildlife to serene beaches and mystical mountains, Malaysia offers an unparalleled eco-travel experience. 
+                Whether you’re a seasoned adventurer or someone looking to reconnect with nature, Malaysia’s natural beauty will leave you in awe. 
+                Join me as we explore the top eco and nature destinations in Malaysia, where the lush landscapes and rich biodiversity promise an unforgettable journey.    
+            </p>
+        </section>
+
+        <section id="section1">
+            <h2>Taman Negara: The World’s Oldest Rainforest</h2>
+
+            <div class="slideshow">
+                <div class="slideshow-content1 fading">
+                    <img src="../Owen/TamanNegara/TM1.jpg" alt="pic1">
+                </div>
+
+                <div class="slideshow-content1 fading">
+                    <img src="../Owen/TamanNegara/TM2.jpg" alt="pic2">
+                </div>
+
+                <div class="slideshow-content1 fading">
+                    <img src="../Owen/TamanNegara/TM3.jpg" alt="pic3">
+                </div>
+
+                <div class="slideshow-content1 fading">
+                    <img src="../Owen/TamanNegara/TM4.jpg" alt="pic4">
+                </div>
+
+                <div>
+                    <a class="pref" onclick="nextSlide(-1, 'slideshow-content1')"><i class="bi bi-arrow-left-square-fill"></i></a>
+                    <a class="next" onclick="nextSlide(1, 'slideshow-content1')"><i class="bi bi-arrow-right-square-fill"></i></a>
+                </div>
+            </div>
+
+            <div class="dot-container">
+                <span class="dots1" onclick="currentSlide(1, 'slideshow-content1')"></span>
+                <span class="dots1" onclick="currentSlide(2, 'slideshow-content1')"></span>
+                <span class="dots1" onclick="currentSlide(3, 'slideshow-content1')"></span>
+                <span class="dots1" onclick="currentSlide(4, 'slideshow-content1')"></span>
+            </div>
+
+            <p>
+                Nestled in the heart of Peninsular Malaysia, Taman Negara is more than just a national park; it is a living, breathing testament to the planet's natural history. 
+                With its rich tapestry of biodiversity and ancient ecosystems, Taman Negara is often described as the crown jewel of Malaysia's natural heritage. 
+                For over 130 million years, this rainforest has remained untouched by the ice ages, making it one of the oldest rainforests on Earth. <br><br>
+                Taman Negara, which literally translates to "National Park" in Malay, spans across three Malaysian states: Pahang, Kelantan, and Terengganu. 
+                Covering an expansive area of over 4,343 square kilometers, this vast park offers visitors a chance to step back in time and experience the wonders of a primeval forest. 
+                The air here is thick with humidity and the rich scent of earth, while towering trees form a verdant canopy overhead, sheltering a complex web of life below.
+            </p>
+
+            <h4>A Paradise for Wildlife Enthusiasts</h4>
+            <p>
+                Taman Negara is home to some of the most diverse wildlife in the world. 
+                The park shelters endangered species like the Malayan tiger, Asian elephant, and the elusive Sumatran rhinoceros, although sightings are rare due to the dense forest cover. 
+                More commonly, visitors can spot macaques, wild boars, and an astonishing variety of bird species—over 350 species to be exact, including the Great Argus pheasant and the Rhinoceros hornbill. 
+                For birdwatchers, the park is nothing short of paradise. The melodic calls of the birds, interspersed with the rustle of leaves, create a natural symphony that is both soothing and invigorating.
+            </p>
+
+            <h4>Adventure Awaits: Activities You Can Do</h4>
+            <p>
+                <ul class="content-list">
+                    <li>
+                        <b>Canopy Walkway:</b> 
+                        <span>The park boasts one of the world's longest canopy walkways, suspended 40 meters above the forest floor. Walking along this swaying bridge offers a bird's-eye view of the lush greenery and the chance to spot wildlife from a unique perspective.</span>
+                    </li>
+
+                    <li>
+                        <b>Jungle Trekking:</b> 
+                        <span>For those looking to immerse themselves fully in the forest, Taman Negara offers countless jungle trekking routes. Whether it's a guided night walk, where you can encounter nocturnal creatures, or a longer hike to the top of Bukit Teresek, the trails will challenge and reward you with breathtaking views.</span>
+                    </li>
+
+                    <li>
+                        <b>River Cruises:</b> 
+                        <span>The Tembeling River runs through the park, providing an alternative way to explore the area. A river cruise or boat ride offers a relaxing way to see the forest and its inhabitants, including occasional sightings of river otters and monitor lizards basking on the riverbanks.</span>
+                    </li>
+                </ul>
+            </p>
+
+            <h4>Cultural Encounters</h4>
+            <p>
+                Beyond the wildlife and natural beauty, Taman Negara is also a place to connect with the indigenous peoples of Malaysia. 
+                The Orang Asli, meaning "original people," have lived in harmony with the forest for centuries. 
+                Tourists have the unique opportunity to visit Orang Asli villages. 
+                These visits are often organized by local guides who have strong ties to the communities. 
+                Here are some of the things you can expect during a cultural encounter in Taman Negara:
+
+                <ul class="content-list">
+                    <li>
+                        <b>Traditional Craftsmanship:</b> 
+                        <span>One of the highlights of visiting an Orang Asli village is witnessing their traditional craftsmanship. The Orang Asli are skilled in making tools, weapons, and handicrafts using materials sourced directly from the forest. You can see them demonstrate how they make blowpipes, known as sumpit, which are used for hunting. The blowpipes are made from bamboo, and the darts are often tipped with natural toxins derived from tree sap, showcasing their deep understanding of the forest’s resources.</span>
+                    </li>
+
+                    <li>
+                        <b>Cultural Performance:</b> 
+                        <span>In some villages, visitors might be treated to traditional music and dance performances. The Orang Asli use music as a way to communicate with the spirits of the forest and to celebrate significant events. Their music often features simple, yet hauntingly beautiful, melodies played on handmade instruments, accompanied by rhythmic drumming and chanting.</span>
+                    </li>
+
+                    <li>
+                        <b>Survival Skills:</b> 
+                        <span>Learning about survival skills from the Orang Asli is an unforgettable experience. They demonstrate how to start a fire without matches, using nothing but rattan and bamboo. You can also observe their hunting techniques, including the use of the blowpipe and trapping methods that have been perfected over centuries.</span>
+                    </li>
+                </ul>
+            </p>  
+
+            <a class="fa fa-heart" id="favButton1"></a>
+        </section>
+
+        <section id="section2">
+            <h2>The Cameron Highlands: A Refreshing Escape</h2>
+
+            <div class="slideshow">
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH1.jpg" alt="pic1">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH2.jpg" alt="pic2">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH3.jpg" alt="pic3">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH4.jpg" alt="pic4">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH5.png" alt="pic5">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH6.jpg" alt="pic6">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH7.jpg" alt="pic7">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH8.jpg" alt="pic8">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH9.jpg" alt="pic9">
+                </div>
+
+                <div class="slideshow-content2 fading">
+                    <img src="Owen/Cameron/CH10.jpg" alt="pic10">
+                </div>
+
+                <div>
+                    <a class="pref" onclick="nextSlide(-1, 'slideshow-content2')"><i class="bi bi-arrow-left-square-fill"></i></a>
+                    <a class="next" onclick="nextSlide(1, 'slideshow-content2')"><i class="bi bi-arrow-right-square-fill"></i></a>
+                </div>
+            </div>
+
+            <div class="dot-container">
+                <span class="dots2" onclick="currentSlide(1, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(2, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(3, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(4, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(5, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(6, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(7, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(8, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(9, 'slideshow-content2')"></span>
+                <span class="dots2" onclick="currentSlide(10, 'slideshow-content2')"></span>
+            </div>
+
+            <p>
+                Nestled in the Titiwangsa Mountains, the Cameron Highlands is a cool, refreshing escape from the tropical heat of Malaysia. 
+                Known for its sprawling tea plantations, lush green hills, and vibrant flower gardens, the Cameron Highlands offers a unique blend of natural beauty and cultural experiences that captivate the hearts of travelers.
+            </p>
+
+            <h4>Tea Plantations: The Green Heart of Cameron Highlands</h4>
+            <p>
+                One of the most iconic sights in Cameron Highlands is its expansive tea plantations, where neatly trimmed rows of tea bushes stretch out across the rolling hills. 
+                These plantations, established during the British colonial era, are not just about tea production; they are a significant part of the highlands' cultural and historical fabric and have become synonymous with the region and remain a must-visit for anyone traveling to the highlands.
+                Walking through these plantations, you can almost feel the colonial past of Malaysia, where tea became an integral part of the local economy and culture.
+                Here are some of the top recommendations for curious travellers:
+
+                <ul class="content-list">
+                    <li>
+                        <b>BOH Tea Plantation:</b> 
+                        <span>As the largest and most famous tea producer in Malaysia, BOH Tea Plantation offers a unique glimpse into the world of tea production. The plantation, covering over 1,200 hectares, is located at a high altitude, providing the ideal climate for growing high-quality tea. Visitors can take a guided tour of the tea factory to learn about the intricate process of tea production, from picking the leaves to processing and packaging. The tour is both educational and immersive, ending with a visit to the plantation's tea house, where you can enjoy a fresh cup of tea paired with delicious scones while overlooking the breathtaking scenery.</span>
+                    </li>
+
+                    <li>
+                        <b>Cameron Valley Tea House:</b> 
+                        <span>Another popular destination, the Cameron Valley Tea House, offers an equally stunning view of tea-covered hills. Managed by Bharat Tea Plantation, this location allows visitors to walk through the tea fields, learn about the history of tea in Malaysia, and sample a variety of teas. The tea house also has a gift shop where you can purchase different blends of tea to take home.</span>
+                    </li>
+
+                    <li>
+                        <b>Sungai Palas Tea Garden:</b> 
+                        <span>Sungai Palas Tea Garden is a BOH-owned tea plantation which is located in Cameron Highlands, Malaysia. The Chairman, Tristan Russel, transformed the land into a garden of beautiful tea that has become a tourist attraction. In order to ensure the visitors can be accommodated properly, in 2007 BOH built a visitor center and cafe. Here, one can be acquainted with the history as well as the culture of tea in Malaysia, and enjoy a cup of tea and local snacks. The tea factory is another popular wherein tourists can participate in a free informational excursion that explains the way of making tea using traditional methods and buy BOH tea as a souvenir.</span>
+                    </li>
+                </ul>
+            </p>
+
+            <h4>Lush Gardens: A Blooming Wonderland</h4>
+            <p>
+                Cameron Highlands is also home to a variety of gardens that showcase the region's diverse flora. 
+                The cool climate is perfect for cultivating a wide range of plants, making these gardens a delightful attraction for nature lovers and horticulturists alike.
+
+                <ul class="content-list">
+                    <li>
+                        <b>Strawberry Farms:</b> 
+                        <p>
+                            Strawberry farms are one of the most iconic attractions in Cameron Highlands, Malaysia. 
+                            The cool, temperate climate of the highlands provides an ideal environment for strawberry cultivation, making these farms a must-visit for tourists.
+                            Some of the popular strawberry farms include Strawberry Farm Green View Garden, Big Red Strawberry Farm, YZ Strawberry Farm and Cafe and KHM Strawberries & Jam.
+                            Here’s a deeper look at what makes the strawberry farms of Cameron Highlands so special.
+
+                            <ul>
+                                <li>
+                                    <b>Fresh Strawberry Picking Experience:</b> 
+                                    <span>Visitors to the strawberry farms can engage in a hands-on experience by picking their own strawberries. This activity is particularly popular among families and children, as it allows them to select ripe, juicy strawberries straight from the plant.</span>
+                                </li>
+
+                                <li>
+                                    <b>Variety of Strawberry-Based Products:</b> 
+                                    <span>Beyond the fresh fruit, many farms also offer a range of strawberry-based products, such as jams, chocolates, ice creams, and even fresh strawberry juices. These products are often made on-site using freshly picked strawberries, ensuring high quality and rich flavors.</span>
+                                </li>
+
+                                <li>
+                                    <b>Scenic Views and Photo Opportunities:</b> 
+                                    <span>The strawberry farms are often set against the picturesque backdrop of Cameron Highlands’ rolling hills and lush greenery. This setting provides stunning views and ample photo opportunities for visitors looking to capture their experience.</span>
+                                </li>
+                            </ul>
+                        </p>
+                    </li>
+
+                    <li>
+                        <b>Lavender Garden:</b> 
+                        <span>This garden is a vibrant, fragrant paradise, with rows of purple lavender blooms creating a mesmerizing landscape. The garden is not only about lavender; it also features other flowers, such as daisies and roses, adding to the colorful display. Visitors can stroll through the garden, take pictures among the flowers, and even purchase lavender-themed souvenirs like essential oils, perfumes, and soaps. The Lavender Garden also has a café where you can try lavender-flavored ice cream and other treats.</span>
+                    </li>
+
+                    <li>
+                        <b>Rose Valley:</b> 
+                        <span>For those who love roses, the Rose Valley is a must-visit. This garden houses hundreds of different rose varieties, from classic red roses to unique hybrids in various colors. The garden is beautifully arranged, with roses climbing trellises, lining walkways, and filling the air with their sweet scent. Rose Valley also offers a selection of other plants and flowers, including orchids and carnivorous plants, making it a diverse botanical experience.</span>
+                    </li>
+
+                    <li>
+                        <b>Butterfly Garden:</b> 
+                        <span>The Butterfly Garden in Cameron Highlands is a delightful spot for visitors of all ages. It houses a variety of butterfly species that flutter freely around the garden. In addition to butterflies, the garden also has a small insect and reptile section, where you can learn about the highland's unique fauna. The colorful butterflies, coupled with the blooming flowers, make for a picturesque and educational experience.</span>
+                    </li>
+
+                    <li>
+                        <b>Vegetable Farms:</b> 
+                        <span>Beyond flowers, Cameron Highlands is famous for its vegetable farms. The cool climate allows for the cultivation of various vegetables like lettuce, cabbage, and tomatoes. Some farms are open to visitors, where you can learn about sustainable farming practices and even purchase freshly harvested produce. These farms are a great way to see how the highlands contribute to Malaysia’s agriculture and food supply.</span>
+                    </li>
+                </ul>
+            </p>
+
+            <a class="fa fa-heart" id="favButton2"></a>
+        </section>
+
+        <footer id="footer">
+            <p>&copy; 2024 Malaysia Travel Blog. All rights reserved.</p>
+            <div>
+                <i class="bi bi-facebook" style="font-size: 20px;"></i>
+                <i class="bi bi-tiktok" style="font-size: 20px;"></i>
+                <i class="bi bi-twitter" style="font-size: 20px;"></i>
+                <i class="bi bi-youtube" style="font-size: 20px;"></i>
+            </div>
+        </footer>
+
+        <script>
+            var slideIndex1 = 1, slideIndex2 = 1;
+            displaySlide(slideIndex1, "slideshow-content1", "dots1");
+            displaySlide(slideIndex2, "slideshow-content2", "dots2");
+
+            window.onload = checkCookie;
+
+            initializeFavourite();
+
+            var favourites = document.getElementsByClassName("fa-heart");
+            Array.from(favourites).forEach((item) => {
+                var id = item.id;
+                var sectionId = "section" + id.charAt(id.length - 1);
+
+                item.addEventListener("click", () => toggleFavourite(sectionId, id));
+            });
+
+            document.addEventListener('scroll', function() {
+                var footer = document.getElementById('footer');
+                var scrollPosition = window.innerHeight + window.scrollY;
+                var documentHeight = document.documentElement.scrollHeight;
+        
+                if (scrollPosition >= documentHeight) {
+                    footer.classList.add('show');
+                }
+                else {
+                    footer.classList.remove('show');
+                }
+            });
+            
+            function displaySlide(index, className, dots) {
+                var dots = document.getElementsByClassName(dots);
+                var slides = document.getElementsByClassName(className);
+
+                for (var i = 0; i < dots.length; i++) {
+                    dots[i].classList.remove("active");
+                }
+        
+                for (var i = 0; i < slides.length; i++) {
+                    slides[i].style.display = "none";
+                }
+
+                if (className == "slideshow-content1") {
+                    if (index < 1) slideIndex1 = slides.length;
+                    if (index > slides.length) slideIndex1 = 1;
+        
+                    dots[slideIndex1 - 1].classList.add("active");
+                    slides[slideIndex1 - 1].style.display = "block"; 
+                }
+                else {
+                    if (index < 1) slideIndex2 = slides.length;
+                    if (index > slides.length) slideIndex2 = 1;
+        
+                    dots[slideIndex2 - 1].classList.add("active");
+                    slides[slideIndex2 - 1].style.display = "block"; 
+                }
+                 
+            }
+            
+            function nextSlide(index, name) {
+                if (name == "slideshow-content1") {
+                    displaySlide(slideIndex1 += index, name, "dots1");
+                }
+                else {
+                    displaySlide(slideIndex2 += index, name, "dots2");
+                }
+            }
+
+            function currentSlide(index, name) {
+                if (name == "slideshow-content1") {
+                    slideIndex1 = index;
+                    displaySlide(index, name, "dots1");
+                }
+                else {
+                    slideIndex2 = index;
+                    displaySlide(index, name, "dots2");
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,267 @@
+/* General Styles */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    text-transform:capitalize;
+    box-sizing:border-box;
+    transition:all .3s ease;
+    text-decoration:none;
+}
+
+a{
+    text-decoration: none;
+    color: #2980b9;
+}
+
+.home .home-box{
+    width:100%;
+    height:100%;
+}
+
+.home .home-box nav{
+    height: 100%;
+    background: #0784b5;
+    backdrop-filter: blur(1px);
+    display: flex;
+    column-gap: 30px;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    padding:0 4rem;
+    position: relative;
+}
+
+.home .home-box nav .logo {
+    display: flex;
+    list-style: none;
+    gap: 10px;
+    
+}
+
+.home .home-box nav .logo a{
+    color: blue;
+    font-size: 1.5rem;
+    align-items: center;
+    font-weight: 800;
+    font-style: italic;
+}
+
+.home .home-box nav .bar{
+    color:white;
+    font-size: 1.35rem;
+    cursor: pointer;
+    display: none;
+}
+
+.home .home-box nav .bar:hover{
+    color: #343a40;
+}
+
+.home .home-box nav .menu .close{
+    display: none;
+}
+
+.home .home-box nav .menu ul{
+    font-size: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    list-style: none;
+}
+
+.home .home-box nav .menu ul li a{
+    color: white;
+}
+
+.home .home-box nav .menu ul li a:hover{
+    color:#343a40;
+}
+
+.home .home-box .weather{
+    color: yellow;
+}
+
+.home .home-box .weather p{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.travel-section .site-title{
+    flex-direction: column;
+    text-align: center;
+    font-size: 1.5rem;
+    padding-bottom: 1rem;
+    
+}
+
+/* Travel Section Styles */
+.travel-section {
+    padding: 2rem;
+    background-color: #fff;
+    margin: 1rem;
+}
+
+.travel-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.travel-options {
+    display: flex;
+    justify-content: space-around;
+    overflow: scroll;
+    gap: 2rem;
+}
+
+.travel-options::-webkit-scrollbar {
+    display: none;
+  }
+
+.option-card {
+    background-color: #ecf0f1;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    min-width: 280px;
+    text-align: center;
+}
+
+.option-card img{
+    width:100%;
+}
+
+
+.option-card h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.option-card p {
+    margin: 1rem 0;
+}
+
+.more{
+    
+    align-content: center;
+}
+
+.arrow {
+    border: solid #2980b9;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.right {
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+}
+
+.rating {
+    font-size: 1rem;
+    color: #f39c12;
+}
+
+.booking-link {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #2980b9;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.booking-link:hover {
+    background-color: #2c3e50;
+}
+
+/* Footer Styles */
+.main-footer {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #2c3e50;
+    color: white;
+    margin-top: 2rem;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .travel-options {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .option-card {
+        flex: 1 1 100%;
+    }
+}
+
+@media(max-width:1197px){
+    html{
+        font-size: 75%;
+    }
+}
+
+@media(max-width:1020px){
+    html{
+        font-size: 70%;
+    }
+}
+
+@media(max-width:944px){
+   .home .home-box nav{
+    padding: 0 1rem;
+   }
+
+   .home .home-box nav .menu ul{
+    gap: 1rem;
+   }
+}
+
+@media(max-width:850px){
+    .home .home-box nav .menu {
+        display:none;
+    }
+
+    .home .home-box nav .bar{
+        display: block;
+    }
+
+    .home .home-box nav .menu.active{
+        display: block;
+        position: absolute;
+        right:-2rem;
+        top:-1rem;
+        width:100vw;
+        height:100vh;
+        background-color: rgb(0 0 0/90%);
+        display:flex;
+        align-items:center;
+        padding:0 3rem;
+    }
+
+    .home .home-box nav .menu .close {
+        display: block;
+        position: absolute;
+        right: 3rem;
+        top: 3rem;
+        cursor:pointer;
+        color:white;
+        font-size: 2rem;
+    }
+
+    .home .home-box nav .menu .close:hover{
+        color: #343a40;
+    }
+
+    .home .home-box nav .menu ul{
+        flex-direction:column;
+        font-size:30px;
+    }
+}

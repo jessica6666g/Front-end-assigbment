@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>George Town's Clan Jetties</title>
+</head>
+<body>
+
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+        
+    <div class="font-controls" style="float: right; margin-right: 20px;">
+        <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+        <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+    </div> 
+    
+    <div class="hNc_details">
+        <header class="hNc_details-title">
+            <h1>George Town's Clan Jetties</h1>
+        </header>
+    
+        <div class="hNc_details_gallery">
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/clan jetties 1.png" alt="clan jetties 1">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/clan jetties 2.jpg" alt="clan jetties 2">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/clan jetties 3.jpg" alt="clan jetties 3">
+            </div>
+            <div class="hNc_details_image">
+                <img src="Alicia/Images/clan jetties 4.jpg" alt="clan jetties 4">
+            </div>
+        </div>    
+         
+        <section class="hNc_overview_section">
+            <div class="hNc_overview">
+                <h2>Overview</h2>
+                <p id="overview-text">
+                    The Clan Jetties of George Town, Penang, are a unique and historical waterfront community that dates back to the late 19th century. These jetties were established by Chinese immigrant clans who built wooden houses on stilts along the shores of the Penang Strait. Each jetty is associated with a specific clan, such as the Chew, Lim, and Tan, and the community has preserved much of its traditional way of life, with families living in close-knit, water-based communities. The jetties offer a glimpse into Penang's multicultural heritage and are a living testament to the early Chinese settlers' resourcefulness and communal spirit.
+                    </br></br>
+                    Today, the Clan Jetties are part of George Town's UNESCO World Heritage site, attracting visitors with their rustic charm, cultural significance, and the opportunity to experience a slice of Penang's history. Among the jetties, Chew Jetty is the most well-known, featuring small shops, temples, and homes that welcome tourists, making it a popular spot for photography and cultural exploration.                </p>
+                <button id="show-more-btn" onclick="toggleText(this)">Show More</button>
+            </div>
+
+            <div class="hNc_location">
+                <h2>Location Details</h2>
+                <p>Address: Pengkalan Weld, George Town, 10300 George Town, Pulau Pinang</p>
+                <p>Contact: 019-593 5333</p>
+                <a href="https://www.wonderfulmalaysia.com/attractions/clan-jetties-floating-village.htm" target="_blank" class="visit-website">Visit Website</a>
+                <a href="https://maps.app.goo.gl/fmceEKY3XxEXfUJaA" target="_blank" class="show-in-map">Show in Map</a>
+            </div>
+        </section>
+    </div>
+
+    <div class="hNc_quiz_section">
+        <h2>Test Your Knowledge</h2>
+        <div id="quiz">
+            <p>Which of the following is the most famous jetty among the Clan Jetties?</p>
+            <button onclick="checkAnswer(1, 'wrong')">Lim Jetty</button>
+            <button onclick="checkAnswer(1, 'correct')">Chew Jetty</button>
+            <button onclick="checkAnswer(1, 'wrong')">Tan Jetty</button>            
+        </div>
+        <div id="quiz-result"></div>
+        
+    </div>
+    
+    <script>
+        function checkAnswer(question, answer) {
+            let result = document.getElementById('quiz-result');
+            if (answer === 'correct') {
+                result.innerHTML = '<p>Correct! Chew Jetty is the most famous.</p>';
+            } else {
+                result.innerHTML = '<p>Incorrect. Try again!</p>';
+            }
+        }
+    </script>
+
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+body {
+    margin: 0px;
+    background-color: mintcream;
+}
+
+header {
+    text-align: center;
+    padding-bottom: 20px;
+    background-size: cover;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-image: url("canvaBackground.png");
+}
+
+header h1 {
+    font-size: 3em;
+    color: midnightblue;
+    font-family: 'Dancing Script', cursive;
+}
+
+nav ul {
+    margin: 0;
+    list-style-type: none;
+}
+
+nav ul li {
+    margin: 0 15px;
+    display: inline;
+}
+
+nav ul li a {
+    font-size: 1.1em;
+    color: midnightblue;
+    text-decoration: none;
+    font-family: 'Dancing Script', cursive;
+}
+
+#destinations {
+    z-index: 1;
+    padding: 0;
+    display: none;
+    text-align: left;
+    min-width: 280px;
+    position: absolute;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    background: linear-gradient(to right, black, slategrey);
+}
+
+#destinations li a {
+    font-size: 1.1em;
+    color: ghostwhite;
+    text-decoration: none;
+    font-family: 'Dancing Script', cursive;
+}
+
+#dropdown:hover #destinations {
+    display: block;
+}
+
+main {
+    margin: 20px;
+    padding: 20px;
+    align-items: center;
+    border-radius: 15px;
+}
+
+main section {
+    width: 70%;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, lightskyblue, #c3ebeb, #d2f0f0, lightskyblue);
+}
+
+main section h2 {
+    margin-top: 0;
+    color: midnightblue;
+}
+
+main section h4, p, .shopping li h5 {
+    color: midnightblue;
+}
+
+footer {
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    text-align: center;
+    background-color: black;
+}
+

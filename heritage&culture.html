@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">    
+    <title>Heritage & Culture</title>
+</head>
+<body>
+    
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+
+    <section class="hNc_intro">
+        <div class="hNc_intro_image">
+            <img src="Alicia/Images/dataran-merdeka-sultan-abdul-samad.jpeg" alt="Heritage & Culture" />
+            
+            <div class="hNc_intro_text">
+                <h1>Heritage & Culture</h1>
+                <p>Malaysia's heritage and culture blend diverse traditions, highlighted by ancient temples, colonial architecture, vibrant festivals, and traditional arts.</p>
+                <div class="hNc_video-icon" onclick="openVideo()">
+                    <i class="ri-play-circle-fill"></i>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    
+    <div id="hNc_videoPopup" class="hNc_video-popup">
+        <div class="hNc_video-popup-content">
+            <span class="close" onclick="closeVideo()">&times;</span>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/AoXYmfBurUM?si=aneu99uo-Oom747o&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+    
+
+    <section class="culture_section">
+        <div class="font-controls" style="float: right; margin-right: 20px;">
+            <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+            <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+        </div> 
+        
+        <h2>Discover Malaysia's Rich Culture</h2>
+        <div class="culture_grid">
+            <div class="culture_box">
+                <h3>Ethnic Diversity</h3>
+                <p>Malaysia's ethnic diversity is one of the country's most distinctive and defining features, contributing to its rich cultural landscape. The population of Malaysia is made up of a blend of various ethnic groups, each with its own unique cultural practices, languages, and traditions.</p>
+            </div>
+            <div class="culture_box">
+                <h3>Historical Legacy</h3>
+                <p>Malaysia's historical legacy is a rich tapestry woven from its strategic position along ancient trade routes, which brought influences from Indian, Chinese, and Islamic civilizations, and later European colonial powers, particularly the Portuguese, Dutch, and British. This diverse history has shaped Malaysia into a multicultural nation with a unique blend of traditions, languages, and religious practices, evident in its architecture, customs, and societal structures today.</p>
+            </div>
+            <div class="culture_box">
+                <h3>Cultural Heritage</h3>
+                <p>Malaysia's cultural heritage is a vibrant fusion of Malay, Chinese, Indian, and indigenous traditions, enriched by centuries of trade and colonial influences. This diversity is reflected in the country's festivals, art, cuisine, and architecture, creating a unique cultural mosaic that celebrates both unity and individuality.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="hNc_container">
+        <div class="hNc_section">
+            <h3 class="hNc_title">Heritage & Culture</h3>
+            <p class="highlights">Highlights of Malaysia's popular heritage and cultural attractions</p>
+
+            <div class="hNc_grid">
+                <div class="hNc">
+                    <img src="Alicia/Images/A_Famosa.jpeg" alt="A Famosa Melaka"/>
+                    <div class="hNc_name">
+                        <i class="ri-map-pin-range-fill"></i>
+                        <a href="AFamosa.html" target="_blank">A Famosa, Melaka</a>
+                    </div>
+                </div>
+                <div class="hNc">
+                    <img src="Alicia/Images/Batu_Caves.jpg" alt="Batu Caves Kuala Lumpur"/>
+                    <div class="hNc_name">
+                        <i class="ri-map-pin-range-fill"></i>
+                        <a href="BatuCavesAttraction.html" target="_blank">Batu Caves, Kuala Lumpur</a>
+                    </div>
+                </div>
+                <div class="hNc">
+                    <img src="Alicia/Images/George_Town's_Clan_Jetties.jpg" alt="George Town's Clan Jetties Penang"/>
+                    <div class="hNc_name">
+                        <i class="ri-map-pin-range-fill"></i>
+                        <a href="ClanJetties.html" target="_blank">George Town's Clan Jetties, Penang</a>
+                    </div>
+                </div>
+                <div class="hNc">
+                    <img src="Alicia/Images/Kellie's_Castle.jpg" alt="Kellie's Castle Perak"/>
+                    <div class="hNc_name">
+                        <i class="ri-map-pin-range-fill"></i>
+                        <a href="KelliesCastle.html" target="_blank">Kellie's Castle, Perak</a>
+                    </div>
+                </div>
+                <div class="hNc">
+                    <img src="Alicia/Images/Borneo Cultures Musuem.jpg" alt="Borneo Cultures Museum Sarawak"/>
+                    <div class="hNc_name">
+                        <i class="ri-map-pin-range-fill"></i>
+                        <a href="BorneoCulturesMuseum.html" target="_blank">Borneo Cultures Musuem, Sarawak</a>
+                    </div>
+                </div>
+                <div class="hNc">
+                    <img src="Alicia/Images/Putra Mosque.jpg" alt="Putra Mosque Putrajaya"/>
+                    <div class="hNc_name">
+                        <i class="ri-map-pin-range-fill"></i>
+                        <a href="PutraMosque.html" target="_blank">Putra Mosque, Putrajaya</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="hNc_maylike">
+        <h2>YOU MAY ALSO LIKE...</h2>
+        <div class="hNc_recommendation_section">
+            <div class="hNc_recommendation">
+                <a href="https://www.mbmb.gov.my/en/tourism/history-places/melaka-sultanate-palace">
+                    <img src="Alicia/Images/Malacca-Sultanate-Palace.jpg" alt="Attraction 1">
+                    <h3>Malacca Sultanate Palace</h3>
+                    <p>A cultural museum which showcases the history of the region.</p>
+                </a>
+            </div>
+            <div class="hNc_recommendation">
+                <a href="https://en.wikipedia.org/wiki/Thean_Hou_Temple">
+                    <img src="Alicia/Images/thean-hou-temple-kuala-lumpur-main-hall-1.jpg" alt="Attraction 2">
+                    <h3>Thean Hou Temple</h3>
+                    <p>A grand Chinese temple dedicated to the sea goddess Mazu.</p>
+                </a>
+            </div>
+            <div class="hNc_recommendation">
+                <a href="https://en.wikipedia.org/wiki/Fort_Cornwallis">
+                    <img src="Alicia/Images/Fort-Cornwallis.jpg" alt="Attraction 3">
+                    <h3>Fort Cornwallis, Penang</h3>
+                    <p>A historic British fort built in the late 18th century, known for its well-preserved cannons and significant colonial architecture.</p>
+                </a>
+            </div>
+            <div class="hNc_recommendation">
+                <a href="https://sarawaktourism.com/attraction/fort-margherita">
+                    <img src="Alicia/Images/Fort Margherita.jpg" alt="Attraction 4">
+                    <h3>Fort Margherita, Kuching</h3>
+                    <p>A historic fortress built in 1879 to protect the city, now housing a museum showcasing Sarawak's history.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+        
+    <div class="upcoming-events-section">
+        <h2>Upcoming Events</h2>
+        <div class="events-container">
+            <div class="event-box" data-event="1">
+                <a href="https://www.merdeka360.my/web/takwim-program/">
+                    <img src="Alicia/Images/merdeka.jpeg" alt="Merdeka 2024">
+                    <div class="event-info">
+                        <h3>Merdeka 2024</h3>
+                        <p><strong>Date:</strong> 31 August 2024</p>
+                        <p><strong>Location:</strong> All over Malaysia</p>
+                        <p>The country's Independence Day, to commemorate the proclamation of the country’s independence on 31 August 1957.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="event-box" data-event="2">
+                <a href="https://portal.jkkn.gov.my/index.php/ms/program/1027">
+                    <img src="Alicia/images/festival permainan malaysia.jpeg" alt="Festival Permainan Malaysia 2024">
+                    <div class="event-info">
+                        <h3>Malaysia Games Festival (Festival Permainan Malaysia)</h3>
+                        <p><strong>Date:</strong> 13 - 16 September 2024</p>
+                        <p><strong>Location:</strong> Dataran Merdeka, Kuala Lumpur</p>
+                        <p>Highlights Malaysian traditional games, many of which may be unfamiliar to modern Malaysians</p>
+                    </div>
+                </a>
+            </div>
+            <div class="event-box" data-event="3">
+                <a href="https://www.locco.com.my/keretapisarong/">
+                    <img src="Alicia/Images/Keretapi Sarong 2024.jpg" alt="Keretapi Sarong 2024">
+                    <div class="event-info">
+                        <h3>Keretapi Sarong 2024</h3>
+                        <p><strong>Date:</strong> 14 September 2024</p>
+                        <p><strong>Location:</strong> Kuala Lumpur</p>
+                        <p>The event, themed "Ethnicity," seeks to weave a colorful cultural tapestry that reflects the rich diversity of Malaysian society.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="event-box" data-event="4">
+                <a href="https://hellosabah.com/event/tanjung-aru-beach-festival-2024/#:~:text=September%2021%20%40%2008%3A00%20%2D%20September%2022%20%40%2017%3A00&text=The%20Tanjung%20Aru%20Beach%20Festival,all%20of%20you%20in%202024!">
+                    <img src="Alicia/Images/Tanjung Aru Beach Festival 2024.png" alt="Tanjung Aru Beach Festival 2024">
+                    <div class="event-info">
+                        <h3>Tanjung Aru Beach Festival 2024</h3>
+                        <p><strong>Date:</strong> 8am @ 21 September - 5pm @ 22 September </p>
+                        <p><strong>Location:</strong> Philips Park, Tanjung Aru, Kota Kinabalu</p>
+                        <p>Annual event held to celebrate local culture, music, food, and art in Sabah.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="event-box" data-event="5">
+                <a href="https://portal.jkkn.gov.my/ms/8-aktiviti/1028-temasya-oghang-kedah-tok">
+                    <img src="Alicia/Images/Temasya Orang Kedah.jpg" alt="Temasya Orang Kedah">
+                    <div class="event-info">
+                        <h3>Temasya Orang Kedah</h3>
+                        <p><strong>Date:</strong> 26 - 29 September 2024</p>
+                        <p><strong>Location:</strong> Perkarangan Stadium Darul Aman, Kedah</p>
+                        <p>A carnival that highlights various aspects of the Kedah community's way of life.</p>
+                    </div>
+                </a>
+            </div>
+            <div class="event-box" data-event="6">
+                <a href="https://portal.jkkn.gov.my/ms/8-aktiviti/1029-festival-caklempong-2024">
+                    <img src="Alicia/Images/Caklempong Festival 2024.jpg" alt="Caklempong Festival 2024">
+                    <div class="event-info">
+                        <h3>Caklempong Festival 2024</h3>
+                        <p><strong>Date:</strong> 27 - 29 September 2024</p>
+                        <p><strong>Location:</strong> Dataran Centrio, Seremban 2, Negeri Sembilan</p>
+                        <p>Features the music of Cak Lempong, one of the main identity of the state.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="pagination">
+            <span class="page-link" onclick="changePage(-1)">Previous</span>
+            <span class="page-link" onclick="changePage(1)">Next</span>
+        </div>
+    </div>
+        
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+    
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

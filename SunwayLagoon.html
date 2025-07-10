@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Alicia/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <title>Sunway Lagoon</title>
+</head>
+<body>
+    <div class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html' id="site-title">Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close">
+                        <i class="fa fa-close"></i>
+                    </div>
+                    <ul>
+                        <li><a href="blog.html" id="blog-link">Blog</a></li>
+                        <li><a href="heritage&culture.html" id="heritage-link">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html" id="eco-link">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html" id="adventure-link">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html" id="shopping-link">Shopping</a></li>
+                        <li><a href="travelplan.html" id="travelplan-link">Travel Planning</a></li>
+                    </ul>
+                </div>
+                <div class="weather" id="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p id="temperature"></p>
+                </div>
+                <div class="bar">
+                    <i class="fa fa-bars"></i>
+                </div>
+            </nav> 
+        </div>
+    
+    </div>
+    
+    <div class="aNe_details" style="background-image:url(Alicia/Images/sunway\ lagoon\ 2.jpg)">
+        <div class="aNe_details_text">
+            <h1>Sunway Lagoon</h1>
+        </div>
+    </div>
+
+    <div class="font-controls" style="float: right; margin-right: 20px;">
+        <button id="increaseFont" onclick="changeFontSize(1)">A+</button>
+        <button id="decreaseFont" onclick="changeFontSize(-1)">A-</button>
+    </div> 
+    
+    <div class="aNe_attraction_overview_section">
+        <div class="aNe_attraction_overview">
+            <h2>Overview</h2>
+            <p id="overview-text">
+                Sunway Lagoon, located in Petaling Jaya, Malaysia, is a sprawling multi-park resort that offers a diverse range of entertainment and recreational activities for visitors of all ages. Established in 1992, it is one of Malaysia's premier theme parks, encompassing several distinct zones, including a water park, amusement park, wildlife park, extreme park, and scream park. The park features a variety of attractions, from thrilling water slides and wave pools to adrenaline-pumping rides and exotic animal encounters. 
+                </br></br>
+                The water park is renowned for its extensive selection of water rides and attractions, including the world’s largest man-made surf beach. The amusement park offers classic rides and entertainment options, while the wildlife park allows guests to experience close encounters with a range of animals. The extreme park caters to adventure seekers with activities like bungee jumping and flying foxes, and the scream park provides a spine-tingling experience with its horror-themed attractions. Sunway Lagoon's diverse offerings make it a popular destination for families, thrill-seekers, and tourists, providing a comprehensive and exciting experience all in one location.
+            </p>
+            <button id="show-more-btn" onclick="toggleText(this)">Show More</button>
+        </div>
+
+        <div class="aNe_attraction_overview_highlights">
+            <h2>Highlights</h2>
+            <ul>
+                <li><b>Water Park:</b> Features extensive water slides, wave pools, and the world’s largest man-made surf beach.</li>
+                <li><b>Amusement Park:</b> Includes a variety of thrilling rides, roller coasters, and family-friendly attractions.</li>
+                <li><b>Wildlife Park:</b> Home to diverse animal species, offering interactive and educational experiences with wildlife.</li>
+                <li><b>Extreme Park:</b> Offers adrenaline-pumping activities such as bungee jumping, flying foxes, and go-karting.</li>
+                <li><b>Scream Park:</b> Provides a horror-themed experience with haunted attractions and scary encounters.</li>
+                <li><b>Adventure Activities:</b> Includes zip-lining, rock climbing, and water-based challenges.</li>
+                <li><b>Family-Friendly Attractions:</b> Features themed areas and rides suitable for younger children and families.</li>
+                <li><b>Events and Shows:</b> Hosts various live performances, seasonal events, and entertainment shows throughout the year.</li>
+            </ul>
+        </div>
+
+        <div class="aNe_attraction_overview_location">
+            <h2>Location & Contact</h2>
+            <p>Address: 3, Jalan PJS 11/11, Bandar Sunway, 47500 Subang Jaya, Selangor</p>
+            <p>Contact: 03-5639 0000</p>
+            <a href="https://sunwaylagoon.com/" target="_blank" class="visit-website">Visit Website</a>
+            <a href="https://maps.app.goo.gl/fsPftbgm9CgGsbWb8" target="_blank" class="show-in-map">Show in Map</a>
+        </div>
+    </div>    
+    
+    <div class="sharethis-inline-share-buttons"></div>
+    <script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=66c0c69968510d00196ce932&product=inline-share-buttons&source=platform" async="async"></script>
+
+    <footer>
+        <section class="footer">
+            <div class="container">
+                <div class="detail">
+                    <h1 id="footer-title">Marvelous Malaysia</h1>
+                    <p id="footer-desc">Explore the Wonders of Malaysia</p>
+                    <h2 id="footer-share-thoughts">Feel Free to Share Your Thoughts</h2>
+                    <p id="footer-email">MarvelousMsia@gmail.com</p>
+                    <h3 id="footer-follow">Follow us</h3>
+                    <div class="social_logo">
+                        <a href="#"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="fa-brands fa-square-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="about-us">
+                    <h3 id="footer-about-us">About Us</h3>
+                    <p><a href="#" id="footer-contact-us">Contact Us</a></p>
+                    <p><a href="#" id="footer-privacy-policy">Privacy Policy</a></p>
+                </div>
+                <div class="help">
+                    <h3 id="footer-help">Help</h3>
+                    <a href="#" id="footer-faq">FAQ</a>
+                </div>
+            </div>
+            
+            <div class="patent">
+                <p id="footer-copyright">&copy; 2024 Discover Malaysia. All rights reserved.</p>
+                <div class="member">
+                    <p id="created-by">Created By :</p>
+                    <p id="creator-raymond">Raymond Tan</p>
+                    <p id="creator-alicia">Alicia</p>
+                    <p id="creator-owen">Owen Khoo</p>
+                    <p id="creator-lee">Lee Xin En</p>
+                </div>
+            </div>
+        </section>
+    </footer>
+
+    <button onclick="scrollToTop()" id="scrollBtn" class="scroll_to_top">
+        <i class="ri-arrow-up-s-line"></i>
+    </button>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="Alicia/script.js"></script>
+</body>
+</html>

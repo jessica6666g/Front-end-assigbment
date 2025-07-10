@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Posts Section</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Blog Posts Section -->
+        <div class="blog-posts-section">
+            <div class="section-header">
+                <h2><i class="fas fa-blog"></i> Latest Blog Posts</h2>
+                <select id="sortBy">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="comments">Most Comments</option>
+                </select>
+            </div>
+
+            <!-- Filter Navigation -->
+            <div class="filter-nav">
+                <button class="filter-btn active" data-category="all">All Posts</button>
+                <button class="filter-btn" data-category="adventure">Adventure</button>
+                <button class="filter-btn" data-category="culture">Culture</button>
+                <button class="filter-btn" data-category="nature">Nature</button>
+                <button class="filter-btn" data-category="food">Food</button>
+            </div>
+
+            <!-- Blog Grid -->
+            <div class="blog-grid" id="blogGrid">
+                <!-- Blog Post 1 -->
+                <article class="blog-post" data-category="adventure" data-date="2024-12-15" data-likes="42" data-comments="15">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop" alt="Mountain Adventure">
+                        <div class="post-category">Adventure</div>
+                        <div class="post-date">Dec 15, 2024</div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Epic Mountain Adventure in the Swiss Alps</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> John Doe</span>
+                            <span><i class="fas fa-clock"></i> 5 min read</span>
+                            <span><i class="fas fa-eye"></i> 1.2k views</span>
+                        </div>
+                        <p class="post-excerpt">
+                            Discover the breathtaking beauty of the Swiss Alps through this incredible journey. From challenging hiking trails to stunning panoramic views, this adventure will take you through some of the most spectacular landscapes in Europe.
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">hiking</span>
+                            <span class="tag">mountains</span>
+                            <span class="tag">photography</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-read">Read More</button>
+                            <div class="post-reactions">
+                                <button class="like-btn" data-likes="42">
+                                    <i class="fas fa-heart"></i> <span class="like-count">42</span>
+                                </button>
+                                <button class="comment-btn">
+                                    <i class="fas fa-comment"></i> 15
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-post" data-category="culture" data-date="2024-12-12" data-likes="67" data-comments="23">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=200&fit=crop" alt="Cultural Experience">
+                        <div class="post-category">Culture</div>
+                        <div class="post-date">Dec 12, 2024</div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Exploring Ancient Temples in Japan</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> Sarah Kim</span>
+                            <span><i class="fas fa-clock"></i> 8 min read</span>
+                            <span><i class="fas fa-eye"></i> 2.1k views</span>
+                        </div>
+                        <p class="post-excerpt">
+                            Journey through the spiritual heart of Japan as we explore centuries-old temples, participate in traditional ceremonies, and immerse ourselves in the rich cultural heritage that defines this beautiful country.
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">temples</span>
+                            <span class="tag">tradition</span>
+                            <span class="tag">spirituality</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-read">Read More</button>
+                            <div class="post-reactions">
+                                <button class="like-btn" data-likes="67">
+                                    <i class="fas fa-heart"></i> <span class="like-count">67</span>
+                                </button>
+                                <button class="comment-btn">
+                                    <i class="fas fa-comment"></i> 23
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="blog-post" data-category="nature" data-date="2024-12-10" data-likes="89" data-comments="31">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=200&fit=crop" alt="Forest Path">
+                        <div class="post-category">Nature</div>
+                        <div class="post-date">Dec 10, 2024</div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Hidden Waterfalls of the Pacific Northwest</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> Mike Johnson</span>
+                            <span class="fas fa-clock"></i> 6 min read</span>
+                            <span><i class="fas fa-eye"></i> 1.8k views</span>
+                        </div>
+                        <p class="post-excerpt">
+                            Uncover the secret waterfalls hidden deep within the lush forests of the Pacific Northwest. This guide will take you off the beaten path to discover nature's most spectacular hidden gems.
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">waterfalls</span>
+                            <span class="tag">forest</span>
+                            <span class="tag">exploration</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-read">Read More</button>
+                            <div class="post-reactions">
+                                <button class="like-btn" data-likes="89">
+                                    <i class="fas fa-heart"></i> <span class="like-count">89</span>
+                                </button>
+                                <button class="comment-btn">
+                                    <i class="fas fa-comment"></i> 31
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="blog-post" data-category="food" data-date="2024-12-08" data-likes="156" data-comments="48">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=200&fit=crop" alt="Gourmet Food">
+                        <div class="post-category">Food</div>
+                        <div class="post-date">Dec 8, 2024</div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Street Food Adventures in Southeast Asia</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> Lisa Chen</span>
+                            <span><i class="fas fa-clock"></i> 7 min read</span>
+                            <span><i class="fas fa-eye"></i> 3.2k views</span>
+                        </div>
+                        <p class="post-excerpt">
+                            Embark on a culinary journey through the vibrant street food scenes of Southeast Asia. From spicy noodles to exotic fruits, discover the flavors that make this region a food lover's paradise.
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">street food</span>
+                            <span class="tag">cuisine</span>
+                            <span class="tag">travel</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-read">Read More</button>
+                            <div class="post-reactions">
+                                <button class="like-btn" data-likes="156">
+                                    <i class="fas fa-heart"></i> <span class="like-count">156</span>
+                                </button>
+                                <button class="comment-btn">
+                                    <i class="fas fa-comment"></i> 48
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 5 -->
+                <article class="blog-post" data-category="adventure" data-date="2024-12-05" data-likes="94" data-comments="27">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=200&fit=crop" alt="Desert Adventure">
+                        <div class="post-category">Adventure</div>
+                        <div class="post-date">Dec 5, 2024</div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Sahara Desert: A Journey Through Time</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> Ahmed Hassan</span>
+                            <span><i class="fas fa-clock"></i> 9 min read</span>
+                            <span><i class="fas fa-eye"></i> 2.7k views</span>
+                        </div>
+                        <p class="post-excerpt">
+                            Experience the mystique of the world's largest hot desert. From camel treks across endless dunes to nights under a blanket of stars, the Sahara offers an adventure like no other.
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">desert</span>
+                            <span class="tag">camel trek</span>
+                            <span class="tag">stars</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-read">Read More</button>
+                            <div class="post-reactions">
+                                <button class="like-btn" data-likes="94">
+                                    <i class="fas fa-heart"></i> <span class="like-count">94</span>
+                                </button>
+                                <button class="comment-btn">
+                                    <i class="fas fa-comment"></i> 27
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Blog Post 6 -->
+                <article class="blog-post" data-category="culture" data-date="2024-12-03" data-likes="73" data-comments="19">
+                    <div class="post-image">
+                        <img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?w=400&h=200&fit=crop" alt="Art and Culture">
+                        <div class="post-category">Culture</div>
+                        <div class="post-date">Dec 3, 2024</div>
+                    </div>
+                    <div class="post-content">
+                        <h3>Renaissance Art in Florence</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-user"></i> Marco Rossi</span>
+                            <span><i class="fas fa-clock"></i> 10 min read</span>
+                            <span><i class="fas fa-eye"></i> 1.9k views</span>
+                        </div>
+                        <p class="post-excerpt">
+                            Dive deep into the birthplace of the Renaissance and discover masterpieces that changed the course of art history. From Michelangelo to Botticelli, explore the genius that flourished in Florence.
+                        </p>
+                        <div class="post-tags">
+                            <span class="tag">art</span>
+                            <span class="tag">renaissance</span>
+                            <span class="tag">history</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="btn-read">Read More</button>
+                            <div class="post-reactions">
+                                <button class="like-btn" data-likes="73">
+                                    <i class="fas fa-heart"></i> <span class="like-count">73</span>
+                                </button>
+                                <button class="comment-btn">
+                                    <i class="fas fa-comment"></i> 19
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container" style="text-align: center; margin-top: 2rem;">
+                <button class="btn-load-more" id="loadMore">
+                    <i class="fas fa-plus"></i> Load More Posts
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

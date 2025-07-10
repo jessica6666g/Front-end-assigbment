@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Marvelous Malaysia - Travel Blog</title>
+    <link rel="stylesheet" href="XinEn/blogvideophoto/blog.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <section class="home">
+        <div class="home-box">
+            <nav>
+                <div class="logo">
+                    <li><a href='index.html'>Marvelous Malaysia</a></li>
+                </div>
+                <div class="menu">
+                    <div class="close"><i class="fa fa-close"></i></div>
+                    <ul>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="heritage&culture.html">Heritage & Culture</a></li>
+                        <li><a href="ecoNature.html">Eco & Nature</a></li>
+                        <li><a href="adventure&entertainment.html">Adventure & Entertainment</a></li>
+                        <li><a href="shopPing2.html">Shopping</a></li>
+                        <li><a href="travelplan.html">Travel Planning</a></li>
+                        <li><a href="photovideo.html">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="weather">
+                    <h3>Kuala Lumpur</h3>
+                    <p>33.02 °C</p>
+                </div>
+                <div class="bar"><i class="fa fa-bars"></i></div>
+            </nav> 
+        </div>
+    </section>
+
+    <header class="site-header">  
+        <nav class="site-nav">  
+            <button id="openModal"><i class="fas fa-plus"></i> Write New Post</button>  
+            <div class="social-sharing">
+                <button class="social-btn facebook" onclick="shareToSocialMedia('facebook')">  
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+                <button class="social-btn twitter" onclick="shareToSocialMedia('twitter')">  
+                    <i class="fab fa-twitter"></i> Twitter
+                </button>
+                <button class="social-btn whatsapp" onclick="shareToSocialMedia('whatsapp')">  
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </button>
+            </div>
+        </nav>  
+    </header>
+
+    <main class="blog-main">
+        <div class="container">
+            <section class="blog-header">
+                <div class="header-content">
+                    <div class="header-text">
+                        <h1>Malaysia Travel Blog</h1>
+                        <p>Discover amazing places, share your adventures, and connect with fellow travelers</p>
+                        <div class="blog-stats">
+                            <div class="stat">
+                                <span class="stat-number" id="totalPosts">13</span>
+                                <span class="stat-label">Total Posts</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-images">
+                        <div class="floating-image img1"><img alt="Malaysia Travel"></div>
+                        <div class="floating-image img2"><img alt="Malaysia Travel"></div>
+                        <div class="floating-image img3"><img alt="Malaysia Travel"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="blog-posts-section">
+                <div class="blog-controls">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search blog posts...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Posts</button>
+                        <button class="filter-btn" data-filter="adventure">Adventure</button>
+                        <button class="filter-btn" data-filter="culture">Culture</button>
+                        <button class="filter-btn" data-filter="nature">Nature</button>
+                        <button class="filter-btn" data-filter="food">Food</button>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h2><i class="fas fa-newspaper"></i> Latest Posts</h2>
+                    <select id="sortSelect">
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="title">By Title</option>
+                    </select>
+                </div>
+
+                <div id="userPostsContainer" class="blog-grid"></div>
+
+                <div id="defaultPostsContainer" class="blog-grid">
+                    <!-- Original Adventure Posts -->
+                    <article class="blog-post" data-category="adventure" data-id="1">
+                        <div class="post-image">
+                            <img src="XinEn/blogvideophoto/default11.jpg" alt="Batu Caves">
+                            <div class="post-category">Adventure</div>
+                            <div class="post-date">Aug 16, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>My Adventure at Batu Caves: A Perfect Blend of Spirituality and Thrill</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Thomas</span>
+                                <span><i class="fas fa-clock"></i> 5 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">As I set out for Batu Caves, just 13 kilometers north of Kuala Lumpur, I could feel the excitement building...</p>
+                            <div class="post-tags">
+                                <span class="tag">#BatuCaves</span>
+                                <span class="tag">#KualaLumpur</span>
+                                <span class="tag">#Adventure</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="adventure" data-id="2">
+                        <div class="post-image">
+                            <img src="XinEn/blogvideophoto/defaultpost2.jpg" alt="Rope Course">
+                            <div class="post-category">Extreme Sports</div>
+                            <div class="post-date">Jun 17, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Conquering Heights: The Gravityz Rope Course Challenge</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Jasmine</span>
+                                <span><i class="fas fa-clock"></i> 7 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">When I heard about The Gravityz Rope Course Challenge in Pulau Pinang, I knew I had to experience it...</p>
+                            <div class="post-tags">
+                                <span class="tag">#Penang</span>
+                                <span class="tag">#ExtremeSports</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="adventure" data-id="3">
+                        <div class="post-image">
+                            <img src="XinEn/blogvideophoto/skydivingdefault3.jpg" alt="Skydiving">
+                            <div class="post-category">Adventure</div>
+                            <div class="post-date">Aug 10, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Skydiving in Paradise: Beach Landing Adventure</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Jerry</span>
+                                <span><i class="fas fa-clock"></i> 6 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Known for its breathtaking beach landings, Malaysia promised a skydiving experience unlike any other...</p>
+                            <div class="post-tags">
+                                <span class="tag">#Skydiving</span>
+                                <span class="tag">#Langkawi</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="nature" data-id="4">
+                        <div class="post-image">
+                            <img src="XinEn/blogvideophoto/defaultpost4.jpeg" alt="Canopy Walk">
+                            <div class="post-category">Nature</div>
+                            <div class="post-date">May 6, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>The Canopy Walk: A Walk Among the Trees</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Tom</span>
+                                <span><i class="fas fa-clock"></i> 4 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">One of the most exhilarating experiences in Taman Negara is walking on the world's longest canopy walkway...</p>
+                            <div class="post-tags">
+                                <span class="tag">#TamanNegara</span>
+                                <span class="tag">#Nature</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- NEW CULTURE POSTS -->
+                    <article class="blog-post" data-category="culture" data-id="5">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1582639510494-c80b5de9f148?w=400&h=250&fit=crop" alt="Malacca Heritage">
+                            <div class="post-category">Culture</div>
+                            <div class="post-date">Sep 15, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Exploring Malacca: A Journey Through Malaysia's Rich Heritage</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Sarah</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Walking through the historic streets of Malacca feels like stepping back in time. The UNESCO World Heritage site offers a fascinating blend of Portuguese, Dutch, and British colonial architecture that tells the story of Malaysia's diverse cultural heritage...</p>
+                            <div class="post-tags">
+                                <span class="tag">#Malacca</span>
+                                <span class="tag">#Heritage</span>
+                                <span class="tag">#Culture</span>
+                                <span class="tag">#UNESCO</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="culture" data-id="6">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&h=250&fit=crop" alt="Traditional Dance">
+                            <div class="post-category">Culture</div>
+                            <div class="post-date">Jul 22, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>The Vibrant Colors of Malaysian Traditional Dance</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Maya</span>
+                                <span><i class="fas fa-clock"></i> 6 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">From the graceful movements of the Zapin to the energetic beats of the Joget, Malaysian traditional dances reflect the country's multicultural soul. Each dance tells a story, preserving ancient traditions while celebrating the harmonious blend of Malay, Chinese, and Indian influences...</p>
+                            <div class="post-tags">
+                                <span class="tag">#TraditionalDance</span>
+                                <span class="tag">#Culture</span>
+                                <span class="tag">#Zapin</span>
+                                <span class="tag">#Multicultural</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="culture" data-id="7">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?w=400&h=250&fit=crop" alt="Batik Art">
+                            <div class="post-category">Culture</div>
+                            <div class="post-date">Oct 3, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>The Art of Batik: Malaysia's Timeless Craft</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Ahmad</span>
+                                <span><i class="fas fa-clock"></i> 5 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Batik represents one of Malaysia's most cherished artistic traditions. This ancient wax-resist dyeing technique creates stunning patterns and designs that have been passed down through generations. Visiting a traditional batik workshop reveals the intricate process behind these beautiful textiles...</p>
+                            <div class="post-tags">
+                                <span class="tag">#Batik</span>
+                                <span class="tag">#TraditionalArt</span>
+                                <span class="tag">#Handicraft</span>
+                                <span class="tag">#Culture</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- NEW NATURE POSTS -->
+                    <article class="blog-post" data-category="nature" data-id="8">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=400&h=250&fit=crop" alt="Cameron Highlands">
+                            <div class="post-category">Nature</div>
+                            <div class="post-date">Nov 12, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Cameron Highlands: Malaysia's Cool Mountain Retreat</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Linda</span>
+                                <span><i class="fas fa-clock"></i> 7 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Escape the tropical heat and immerse yourself in the cool, misty mountains of Cameron Highlands. This hill station offers breathtaking landscapes, sprawling tea plantations, and diverse flora that make it a nature lover's paradise. The journey through winding mountain roads reveals stunning vistas...</p>
+                            <div class="post-tags">
+                                <span class="tag">#CameronHighlands</span>
+                                <span class="tag">#Mountains</span>
+                                <span class="tag">#TeaPlantations</span>
+                                <span class="tag">#Nature</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="nature" data-id="9">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=250&fit=crop" alt="Borneo Rainforest">
+                            <div class="post-category">Nature</div>
+                            <div class="post-date">Dec 1, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Borneo Rainforest: Home to Orangutans and Ancient Trees</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> David</span>
+                                <span><i class="fas fa-clock"></i> 9 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">The ancient rainforests of Borneo represent one of the world's most biodiverse ecosystems. Home to endangered orangutans, proboscis monkeys, and countless species of birds and insects, this pristine wilderness offers unforgettable wildlife encounters. Trekking through the jungle reveals nature's incredible complexity...</p>
+                            <div class="post-tags">
+                                <span class="tag">#Borneo</span>
+                                <span class="tag">#Rainforest</span>
+                                <span class="tag">#Orangutans</span>
+                                <span class="tag">#Wildlife</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="nature" data-id="10">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400&h=250&fit=crop" alt="Kinabalu Park">
+                            <div class="post-category">Nature</div>
+                            <div class="post-date">Jan 8, 2025</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Mount Kinabalu: Conquering Southeast Asia's Highest Peak</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Michael</span>
+                                <span><i class="fas fa-clock"></i> 10 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Standing at 4,095 meters above sea level, Mount Kinabalu challenges climbers with its rugged terrain and reward them with spectacular sunrise views. The climb through different ecological zones reveals unique flora and fauna, from tropical rainforest to alpine meadows near the summit...</p>
+                            <div class="post-tags">
+                                <span class="tag">#MountKinabalu</span>
+                                <span class="tag">#Climbing</span>
+                                <span class="tag">#Sabah</span>
+                                <span class="tag">#Nature</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- NEW FOOD POSTS -->
+                    <article class="blog-post" data-category="food" data-id="11">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=250&fit=crop" alt="Street Food">
+                            <div class="post-category">Food</div>
+                            <div class="post-date">Oct 28, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Street Food Paradise: A Culinary Journey Through Malaysia</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Priya</span>
+                                <span><i class="fas fa-clock"></i> 6 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Malaysia's street food scene is a melting pot of flavors that reflects the country's multicultural heritage. From spicy laksa to savory char kway teow, every hawker stall tells a story of tradition and innovation. The bustling night markets come alive with aromatic spices and sizzling woks...</p>
+                            <div class="post-tags">
+                                <span class="tag">#StreetFood</span>
+                                <span class="tag">#Laksa</span>
+                                <span class="tag">#HawkerStalls</span>
+                                <span class="tag">#Food</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="food" data-id="12">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?w=400&h=250&fit=crop" alt="Rendang">
+                            <div class="post-category">Food</div>
+                            <div class="post-date">Nov 5, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Rendang: The World's Most Delicious Dish</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Fatima</span>
+                                <span><i class="fas fa-clock"></i> 8 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Rendang, often called the world's most delicious dish, represents the pinnacle of Malaysian culinary artistry. This slow-cooked beef curry, rich with coconut milk and aromatic spices, requires hours of patient preparation. Learning to make authentic rendang from local grandmothers reveals culinary secrets...</p>
+                            <div class="post-tags">
+                                <span class="tag">#Rendang</span>
+                                <span class="tag">#MalayFood</span>
+                                <span class="tag">#Curry</span>
+                                <span class="tag">#Food</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post" data-category="food" data-id="13">
+                        <div class="post-image">
+                            <img src="https://images.unsplash.com/photo-1555939594-58e4c913e6c0?w=400&h=250&fit=crop" alt="Dim Sum">
+                            <div class="post-category">Food</div>
+                            <div class="post-date">Dec 20, 2024</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Dim Sum Culture: A Malaysian Chinese Tradition</h3>
+                            <div class="post-meta">
+                                <span><i class="fas fa-user"></i> Kevin</span>
+                                <span><i class="fas fa-clock"></i> 5 min read</span>
+                                <span><i class="fas fa-eye"></i> <span class="view-count">0</span> views</span>
+                            </div>
+                            <p class="post-excerpt">Sunday morning dim sum is a cherished tradition in Malaysian Chinese communities. The art of enjoying these bite-sized delicacies goes beyond just eating – it's about family bonding, conversation, and preserving cultural heritage. From har gow to siu mai, each dumpling represents culinary perfection...</p>
+                            <div class="post-tags">
+                                <span class="tag">#DimSum</span>
+                                <span class="tag">#ChineseFood</span>
+                                <span class="tag">#Family</span>
+                                <span class="tag">#Food</span>
+                            </div>
+                            <div class="post-actions">
+                                <button class="btn-read" onclick="openPostDetail(this, 'default')">Read Full Post</button>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Post Creation Modal -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"><i class="fas fa-edit"></i> Create New Post</h2>
+                <span class="close">&times;</span>
+            </div>
+            <form id="blogForm" class="blog-form">
+                <div class="error" id="formError"></div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="authorName"><i class="fas fa-user"></i> Author Name</label>
+                        <input type="text" id="authorName" name="authorName" required placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="postCategory"><i class="fas fa-tag"></i> Category</label>
+                        <select id="postCategory" name="postCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="adventure">Adventure</option>
+                            <option value="culture">Culture</option>
+                            <option value="nature">Nature</option>
+                            <option value="food">Food</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postTitle"><i class="fas fa-heading"></i> Post Title</label>
+                    <input type="text" id="postTitle" name="postTitle" required placeholder="Enter title">
+                </div>
+                <div class="form-group">
+                    <label for="postImage"><i class="fas fa-image"></i> Featured Image</label>
+                    <input type="file" id="postImage" name="postImage" accept=".png,.jpg,.jpeg" required>
+                    <div id="imagePreview" class="image-preview" style="display: none;">
+                        <img id="previewImg" src="" alt="Preview">
+                        <button type="button" id="removeImage" class="remove-image">×</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postExcerpt"><i class="fas fa-align-left"></i> Full Content</label>
+                    <textarea id="postExcerpt" name="postExcerpt" rows="6" required placeholder="Write your full blog post content here"></textarea>
+                    <small id="excerptCounter" class="word-counter">0 words</small>
+                </div>
+                <div class="form-group">
+                    <label for="postTags"><i class="fas fa-hashtag"></i> Tags</label>
+                    <input type="text" id="postTags" name="postTags" placeholder="adventure, travel">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel">Cancel</button>
+                    <button type="button" onclick="blogManager.clearFormAndDraft()" class="btn-clear" style="background: #dc2626; color: white; border: none; padding: 8px 16px; border-radius: 4px; margin-right: 8px;">Clear Draft</button>
+                    <button type="submit" class="btn-publish">
+                        <i class="fas fa-paper-plane"></i> <span id="submitText">Publish</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Post Detail Modal -->
+    <div id="postDetailModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="detailTitle"></h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="detailImage" src="" alt="">
+                <div class="detail-meta">
+                    <span id="detailAuthor"></span>
+                    <span id="detailDate"></span>
+                    <span id="detailCategory"></span>
+                </div>
+                <div id="detailContent"></div>
+                <div id="detailTags"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <p>&copy; Marvelous Malaysia.2024 Malaysia Travel Blog. All rights reserved.</p>
+    </footer>
+
+    <script src="XinEn/blogvideophoto/blog.js"></script>
+    <script src="Raymond/script.js"></script>
+</body>
+</html>

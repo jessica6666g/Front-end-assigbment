@@ -119,7 +119,7 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 50; /* REDUCED TO ENSURE MOBILE MENU IS ALWAYS ON TOP */
 }
 
 .site-nav {
@@ -1384,13 +1384,13 @@ body {
     }
 }
 
-/* MOBILE MENU STYLES */
+/* MOBILE MENU STYLES - FIXED FOR CONSISTENCY */
 @media (max-width: 768px) {
     .container {
         padding: 0 1rem;
     }
 
-    /* Mobile Menu Overlay */
+    /* Mobile Menu Overlay - ALWAYS HIGHER Z-INDEX THAN SITE HEADER */
     .home .home-box nav .menu {
         position: fixed;
         top: 0;
@@ -1403,7 +1403,7 @@ body {
         align-items: flex-start;
         justify-content: flex-start;
         transition: right 0.3s ease;
-        z-index: 99999;
+        z-index: 999999; /* VERY HIGH Z-INDEX TO ALWAYS BE ON TOP */
         padding-top: 80px;
     }
     
@@ -1446,7 +1446,7 @@ body {
         color: white;
         font-size: 1.5rem;
         cursor: pointer;
-        z-index: 999999;
+        z-index: 9999999; /* EVEN HIGHER TO ENSURE CLOSE BUTTON IS CLICKABLE */
         transition: color 0.3s ease;
     }
     
@@ -1478,9 +1478,12 @@ body {
         overflow: hidden;
     }
     
-    /* Hide site-header when mobile menu is open */
+    /* CONSISTENT FORCE HIDE SITE HEADER WHEN MENU IS OPEN */
     body.menu-open .site-header {
-        display: none;
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        z-index: -1 !important;
     }
 
     .site-nav {

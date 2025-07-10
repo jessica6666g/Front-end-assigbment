@@ -245,8 +245,21 @@ class GalleryManager {
         const bar = document.querySelector('.bar');
         const menu = document.querySelector('.menu');
         const closeBtn = document.querySelector('.close');
-        if (bar && menu) bar.onclick = () => menu.classList.toggle('active');
-        if (closeBtn && menu) closeBtn.onclick = () => menu.classList.remove('active');
+        
+        if (bar && menu) {
+            bar.onclick = () => {
+                menu.classList.toggle('active');
+                // Add/remove body class to prevent scroll but don't hide header
+                document.body.classList.toggle('menu-open');
+            };
+        }
+        
+        if (closeBtn && menu) {
+            closeBtn.onclick = () => {
+                menu.classList.remove('active');
+                document.body.classList.remove('menu-open');
+            };
+        }
     }
 
     setupEventListeners() {

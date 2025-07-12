@@ -1,4 +1,4 @@
-// Unsplash API Integration for Gallery Manager
+// Unsplash REST API Integration using jQuery for Gallery Manager
 class UnsplashImageManager {
     constructor() {
         // Your Unsplash API credentials - Replace with your actual keys from the dashboard
@@ -8,143 +8,266 @@ class UnsplashImageManager {
     }
 
     /**
-     * Search for images on Unsplash based on query
+     * Search for images on Unsplash using jQuery AJAX REST API calls
      * @param {string} query - Search query
      * @param {number} count - Number of images to fetch (default: 12)
      * @returns {Promise<Array>} Array of image objects
      */
-    async searchImages(query, count = 12) {
+    searchImages(query, count = 12) {
         // Check cache first
         const cacheKey = `${query}_${count}`;
         if (this.cache.has(cacheKey)) {
-            return this.cache.get(cacheKey);
+            return Promise.resolve(this.cache.get(cacheKey));
         }
 
-        try {
-            const response = await fetch(
-                `${this.baseURL}/search/photos?query=${encodeURIComponent(query)}&per_page=${count}&orientation=landscape`,
-                {
-                    headers: {
-                        'Authorization': `Client-ID ${this.accessKey}`
+        // Return a Promise that wraps jQuery AJAX call
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.baseURL}/search/photos`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Client-ID ${this.accessKey}`
+                },
+                data: {
+                    query: query,
+                    per_page: count,
+                    orientation: 'landscape'
+                },
+                timeout: 5000, // Reduced from 10 seconds to 5 seconds
+                success: (data) => {
+                    try {
+                        const images = data.results.map(photo => ({
+                            id: photo.id,
+                            url: photo.urls.regular,
+                            thumb: photo.urls.thumb,
+                            full: photo.urls.full,
+                            alt: photo.alt_description || query,
+                            photographer: photo.user.name,
+                            photographerUrl: photo.user.links.html,
+                            downloadUrl: photo.links.download_location,
+                            unsplashUrl: photo.links.html,
+                            width: photo.width,
+                            height: photo.height,
+                            color: photo.color,
+                            description: photo.description || photo.alt_description || query
+                        }));
+
+                        // Cache the results
+                        this.cache.set(cacheKey, images);
+                        console.log(`Successfully fetched ${images.length} images via jQuery AJAX for query: ${query}`);
+                        resolve(images);
+                    } catch (error) {
+                        console.error('Error processing Unsplash response:', error);
+                        reject(error);
+                    }
+                },
+                error: (xhr, status, error) => {
+                    console.error('jQuery AJAX Error fetching images from Unsplash:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        error: error,
+                        responseText: xhr.responseText
+                    });
+                    
+                    // Handle specific error cases
+                    if (xhr.status === 401) {
+                        reject(new Error('Unauthorized: Please check your Unsplash API access key'));
+                    } else if (xhr.status === 403) {
+                        reject(new Error('Rate limit exceeded: Please try again later'));
+                    } else if (xhr.status === 0) {
+                        reject(new Error('Network error: Please check your internet connection'));
+                    } else {
+                        reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText || error}`));
                     }
                 }
-            );
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const images = data.results.map(photo => ({
-                id: photo.id,
-                url: photo.urls.regular,
-                thumb: photo.urls.thumb,
-                full: photo.urls.full,
-                alt: photo.alt_description || query,
-                photographer: photo.user.name,
-                photographerUrl: photo.user.links.html,
-                downloadUrl: photo.links.download_location,
-                unsplashUrl: photo.links.html,
-                width: photo.width,
-                height: photo.height,
-                color: photo.color,
-                description: photo.description || photo.alt_description || query
-            }));
-
-            // Cache the results
-            this.cache.set(cacheKey, images);
-            return images;
-        } catch (error) {
-            console.error('Error fetching images from Unsplash:', error);
-            return [];
-        }
+            });
+        });
     }
 
     /**
-     * Search for videos on Unsplash (Note: Unsplash doesn't have video API, but we can simulate or use other services)
-     * For now, we'll return image results that could represent video thumbnails
+     * Search for videos on Unsplash using jQuery AJAX
+     * Note: Unsplash doesn't have video API, but we simulate with dynamic images
      * @param {string} query - Search query
      * @param {number} count - Number of videos to fetch (default: 6)
      * @returns {Promise<Array>} Array of video-like objects
      */
-    async searchVideos(query, count = 6) {
+    searchVideos(query, count = 6) {
         // Since Unsplash doesn't have videos, we'll search for dynamic/action images
         const videoQuery = `${query} action dynamic motion`;
-        const images = await this.searchImages(videoQuery, count);
         
-        // Transform to video-like objects
-        return images.map(image => ({
-            ...image,
-            type: 'video',
-            duration: Math.floor(Math.random() * 120) + 30, // Random duration 30-150 seconds
-            thumbnail: image.thumb
-        }));
+        return this.searchImages(videoQuery, count).then(images => {
+            // Transform to video-like objects
+            return images.map(image => ({
+                ...image,
+                type: 'video',
+                duration: Math.floor(Math.random() * 120) + 30, // Random duration 30-150 seconds
+                thumbnail: image.thumb
+            }));
+        });
     }
 
     /**
-     * Get curated photos from Unsplash
+     * Get curated photos from Unsplash using jQuery AJAX
      * @param {number} count - Number of photos to fetch
      * @returns {Promise<Array>} Array of curated image objects
      */
-    async getCuratedPhotos(count = 12) {
+    getCuratedPhotos(count = 12) {
         const cacheKey = `curated_${count}`;
         if (this.cache.has(cacheKey)) {
-            return this.cache.get(cacheKey);
+            return Promise.resolve(this.cache.get(cacheKey));
         }
 
-        try {
-            const response = await fetch(
-                `${this.baseURL}/photos?per_page=${count}&order_by=popular`,
-                {
-                    headers: {
-                        'Authorization': `Client-ID ${this.accessKey}`
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.baseURL}/photos`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Client-ID ${this.accessKey}`
+                },
+                data: {
+                    per_page: count,
+                    order_by: 'popular'
+                },
+                timeout: 5000, // Reduced timeout
+                success: (data) => {
+                    try {
+                        const images = data.map(photo => ({
+                            id: photo.id,
+                            url: photo.urls.regular,
+                            thumb: photo.urls.thumb,
+                            full: photo.urls.full,
+                            alt: photo.alt_description || 'Curated photo',
+                            photographer: photo.user.name,
+                            photographerUrl: photo.user.links.html,
+                            downloadUrl: photo.links.download_location,
+                            unsplashUrl: photo.links.html,
+                            width: photo.width,
+                            height: photo.height,
+                            color: photo.color,
+                            description: photo.description || photo.alt_description || 'Curated photo'
+                        }));
+
+                        this.cache.set(cacheKey, images);
+                        console.log(`Successfully fetched ${images.length} curated photos via jQuery AJAX`);
+                        resolve(images);
+                    } catch (error) {
+                        console.error('Error processing curated photos response:', error);
+                        reject(error);
                     }
+                },
+                error: (xhr, status, error) => {
+                    console.error('jQuery AJAX Error fetching curated photos:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        error: error
+                    });
+                    reject(new Error(`Failed to fetch curated photos: ${xhr.statusText || error}`));
                 }
-            );
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const images = data.map(photo => ({
-                id: photo.id,
-                url: photo.urls.regular,
-                thumb: photo.urls.thumb,
-                full: photo.urls.full,
-                alt: photo.alt_description || 'Curated photo',
-                photographer: photo.user.name,
-                photographerUrl: photo.user.links.html,
-                downloadUrl: photo.links.download_location,
-                unsplashUrl: photo.links.html,
-                width: photo.width,
-                height: photo.height,
-                color: photo.color,
-                description: photo.description || photo.alt_description || 'Curated photo'
-            }));
-
-            this.cache.set(cacheKey, images);
-            return images;
-        } catch (error) {
-            console.error('Error fetching curated photos:', error);
-            return [];
-        }
+            });
+        });
     }
 
     /**
-     * Trigger download event (required by Unsplash API)
+     * Trigger download event using jQuery AJAX (required by Unsplash API)
      * @param {string} downloadUrl - Download URL from image object
+     * @returns {Promise} Promise that resolves when download is triggered
      */
-    async triggerDownload(downloadUrl) {
-        try {
-            await fetch(downloadUrl, {
+    triggerDownload(downloadUrl) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: downloadUrl,
+                method: 'GET',
                 headers: {
                     'Authorization': `Client-ID ${this.accessKey}`
+                },
+                timeout: 5000,
+                success: () => {
+                    console.log('Download event triggered successfully via jQuery AJAX');
+                    resolve();
+                },
+                error: (xhr, status, error) => {
+                    console.warn('jQuery AJAX Error triggering download:', error);
+                    // Don't reject as this is not critical
+                    resolve(); // Still resolve to not break the flow
                 }
             });
-        } catch (error) {
-            console.error('Error triggering download:', error);
-        }
+        });
+    }
+
+    /**
+     * Fetch a single image by ID using jQuery AJAX
+     * @param {string} imageId - Unsplash image ID
+     * @returns {Promise<Object>} Single image object
+     */
+    getImageById(imageId) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.baseURL}/photos/${imageId}`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Client-ID ${this.accessKey}`
+                },
+                timeout: 5000, // Reduced timeout
+                success: (photo) => {
+                    try {
+                        const image = {
+                            id: photo.id,
+                            url: photo.urls.regular,
+                            thumb: photo.urls.thumb,
+                            full: photo.urls.full,
+                            alt: photo.alt_description || 'Unsplash photo',
+                            photographer: photo.user.name,
+                            photographerUrl: photo.user.links.html,
+                            downloadUrl: photo.links.download_location,
+                            unsplashUrl: photo.links.html,
+                            width: photo.width,
+                            height: photo.height,
+                            color: photo.color,
+                            description: photo.description || photo.alt_description || 'Unsplash photo'
+                        };
+                        console.log(`Successfully fetched image ${imageId} via jQuery AJAX`);
+                        resolve(image);
+                    } catch (error) {
+                        console.error('Error processing single image response:', error);
+                        reject(error);
+                    }
+                },
+                error: (xhr, status, error) => {
+                    console.error(`jQuery AJAX Error fetching image ${imageId}:`, {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        error: error
+                    });
+                    reject(new Error(`Failed to fetch image: ${xhr.statusText || error}`));
+                }
+            });
+        });
+    }
+
+    /**
+     * Get user statistics using jQuery AJAX
+     * @param {string} username - Unsplash username
+     * @returns {Promise<Object>} User statistics
+     */
+    getUserStats(username) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.baseURL}/users/${username}/statistics`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Client-ID ${this.accessKey}`
+                },
+                timeout: 10000,
+                success: (data) => {
+                    console.log(`Successfully fetched stats for user ${username} via jQuery AJAX`);
+                    resolve(data);
+                },
+                error: (xhr, status, error) => {
+                    console.error(`jQuery AJAX Error fetching user stats for ${username}:`, error);
+                    reject(new Error(`Failed to fetch user stats: ${xhr.statusText || error}`));
+                }
+            });
+        });
     }
 
     /**
@@ -185,16 +308,53 @@ class UnsplashImageManager {
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     }
+
+    /**
+     * Test API connection using jQuery AJAX
+     * @returns {Promise<boolean>} True if API is accessible
+     */
+    testApiConnection() {
+        return new Promise((resolve) => {
+            $.ajax({
+                url: `${this.baseURL}/photos`,
+                method: 'GET',
+                headers: {
+                    'Authorization': `Client-ID ${this.accessKey}`
+                },
+                data: {
+                    per_page: 1
+                },
+                timeout: 5000,
+                success: () => {
+                    console.log('Unsplash API connection test successful via jQuery AJAX');
+                    resolve(true);
+                },
+                error: (xhr, status, error) => {
+                    console.error('Unsplash API connection test failed via jQuery AJAX:', error);
+                    resolve(false);
+                }
+            });
+        });
+    }
 }
 
-// Enhanced Gallery Manager Class with Unsplash Integration
+// Enhanced Gallery Manager Class with jQuery REST API Integration and Enhanced localStorage
 class GalleryManager {
     constructor() {
-        // Safe localStorage operations with fallbacks
+        // Enhanced localStorage operations with fallbacks and error handling
+        this.userPosts = this.loadFromStorage('gallery_user_posts') || [];
+        this.userPhotos = this.loadFromStorage('gallery_user_photos') || [];
+        this.userVideos = this.loadFromStorage('gallery_user_videos') || [];
         this.photos = this.loadFromStorage('galleryPhotos') || [];
         this.videos = this.loadFromStorage('galleryVideos') || [];
         this.likes = this.loadFromStorage('galleryLikes') || {};
         this.views = this.loadFromStorage('galleryViews') || {};
+        this.userSettings = this.loadFromStorage('gallery_user_settings') || {
+            preferredCategories: [],
+            autoSave: true,
+            showNotifications: true
+        };
+        
         this.currentMediaIndex = 0;
         this.currentFilter = 'all';
         this.currentContentType = 'all';
@@ -204,41 +364,443 @@ class GalleryManager {
         this.displayCount = 6; // Start by showing 6 items
         this.itemsPerLoad = 6; // Load 6 more items each time
         
-        // Unsplash Integration
+        // Video processing properties
+        this.currentVideoDuration = '0:00';
+        this.currentVideoThumbnail = null;
+        
+        // Unsplash Integration with jQuery REST API
         this.unsplashManager = new UnsplashImageManager();
         this.loadingImages = new Set();
         this.selectedImageAttribution = null;
         
+        // Auto-save timer
+        this.autoSaveTimer = null;
+        
         this.init();
     }
 
-    // Safe localStorage operations
+    // Enhanced localStorage operations with better error handling and versioning
     loadFromStorage(key) {
         try {
             const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : null;
+            if (!data) return null;
+            
+            const parsed = JSON.parse(data);
+            
+            // Handle versioned data format
+            if (parsed && typeof parsed === 'object' && parsed.version) {
+                return this.migrateDataVersion(parsed, key);
+            }
+            
+            return parsed;
         } catch (error) {
             console.warn(`Error loading ${key} from localStorage:`, error);
+            // Try to recover corrupted data
+            try {
+                localStorage.removeItem(key);
+                this.showNotification(`Recovered from corrupted data in ${key}`, 'warning');
+            } catch (cleanupError) {
+                console.error('Error cleaning up corrupted data:', cleanupError);
+            }
             return null;
         }
     }
 
     saveToStorage(key, data) {
         try {
-            localStorage.setItem(key, JSON.stringify(data));
+            // Add version and timestamp for data integrity
+            const versionedData = {
+                version: '1.0',
+                timestamp: Date.now(),
+                data: data
+            };
+            
+            const serialized = JSON.stringify(versionedData);
+            
+            // Check storage quota
+            try {
+                localStorage.setItem(key, serialized);
+                
+                // Schedule auto-save for user posts
+                if (key.includes('user_posts') && this.userSettings.autoSave) {
+                    this.scheduleAutoSave();
+                }
+                
+                console.log(`Successfully saved ${key} to localStorage`);
+            } catch (quotaError) {
+                if (quotaError.name === 'QuotaExceededError') {
+                    this.handleStorageQuotaExceeded(key, data);
+                } else {
+                    throw quotaError;
+                }
+            }
         } catch (error) {
             console.warn(`Error saving ${key} to localStorage:`, error);
+            this.showNotification('Failed to save data locally. Your changes may be lost.', 'warning');
         }
     }
 
+    // Handle data version migration
+    migrateDataVersion(versionedData, key) {
+        try {
+            if (versionedData.version === '1.0') {
+                return versionedData.data;
+            }
+            
+            // Handle older versions or migration logic here
+            console.log(`Migrating data for ${key} from version ${versionedData.version}`);
+            return versionedData.data || versionedData;
+        } catch (error) {
+            console.error('Error migrating data version:', error);
+            return versionedData.data || versionedData;
+        }
+    }
+
+    // Handle storage quota exceeded
+    handleStorageQuotaExceeded(key, data) {
+        console.warn('LocalStorage quota exceeded, attempting cleanup...');
+        
+        try {
+            // Remove old cached data first
+            this.cleanupOldCache();
+            
+            // Try saving again
+            localStorage.setItem(key, JSON.stringify({
+                version: '1.0',
+                timestamp: Date.now(),
+                data: data
+            }));
+            
+            this.showNotification('Storage cleaned up and data saved', 'success');
+        } catch (retryError) {
+            console.error('Failed to save even after cleanup:', retryError);
+            this.showNotification('Storage full! Some data may not be saved.', 'error');
+            
+            // Offer to export data
+            this.offerDataExport();
+        }
+    }
+
+    // Clean up old cached data
+    cleanupOldCache() {
+        const keysToClean = [];
+        const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+        
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('gallery_cache_')) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (data.timestamp && data.timestamp < oneWeekAgo) {
+                        keysToClean.push(key);
+                    }
+                } catch (error) {
+                    keysToClean.push(key); // Remove corrupted cache
+                }
+            }
+        }
+        
+        keysToClean.forEach(key => {
+            localStorage.removeItem(key);
+            console.log(`Cleaned up old cache: ${key}`);
+        });
+        
+        return keysToClean.length;
+    }
+
+    // Schedule auto-save for user posts
+    scheduleAutoSave() {
+        if (this.autoSaveTimer) {
+            clearTimeout(this.autoSaveTimer);
+        }
+        
+        this.autoSaveTimer = setTimeout(() => {
+            this.saveAllUserData();
+            console.log('Auto-save completed');
+        }, 5000); // Auto-save after 5 seconds of inactivity
+    }
+
+    // Save all user data
+    saveAllUserData() {
+        try {
+            // Combine all user posts for easier management
+            const allUserPosts = [
+                ...this.userPhotos.map(post => ({ ...post, type: 'photo', isUserContent: true })),
+                ...this.userVideos.map(post => ({ ...post, type: 'video', isUserContent: true })),
+                ...this.photos.filter(post => post.isUserContent),
+                ...this.videos.filter(post => post.isUserContent)
+            ];
+            
+            // Remove duplicates based on ID
+            const uniquePosts = allUserPosts.filter((post, index, self) => 
+                index === self.findIndex(p => p.id === post.id)
+            );
+            
+            this.saveToStorage('gallery_user_posts', uniquePosts);
+            this.saveToStorage('gallery_user_photos', this.userPhotos);
+            this.saveToStorage('gallery_user_videos', this.userVideos);
+            this.saveToStorage('galleryPhotos', this.photos);
+            this.saveToStorage('galleryVideos', this.videos);
+            this.saveToStorage('galleryLikes', this.likes);
+            this.saveToStorage('galleryViews', this.views);
+            this.saveToStorage('gallery_user_settings', this.userSettings);
+            
+            if (this.userSettings.showNotifications) {
+                console.log('User data auto-saved successfully');
+            }
+        } catch (error) {
+            console.error('Error during auto-save:', error);
+            this.showNotification('Auto-save failed', 'error');
+        }
+    }
+
+    // Load all user data
+    loadAllUserData() {
+        try {
+            // Load user posts and merge with existing arrays
+            const savedUserPosts = this.loadFromStorage('gallery_user_posts') || [];
+            
+            savedUserPosts.forEach(post => {
+                if (post.type === 'photo' && !this.userPhotos.find(p => p.id === post.id)) {
+                    this.userPhotos.push(post);
+                    if (!this.photos.find(p => p.id === post.id)) {
+                        this.photos.push(post);
+                    }
+                } else if (post.type === 'video' && !this.userVideos.find(v => v.id === post.id)) {
+                    this.userVideos.push(post);
+                    if (!this.videos.find(v => v.id === post.id)) {
+                        this.videos.push(post);
+                    }
+                }
+            });
+            
+            console.log(`Loaded ${savedUserPosts.length} user posts from localStorage`);
+            
+            if (savedUserPosts.length > 0) {
+                this.showNotification(`Restored ${savedUserPosts.length} saved posts`, 'success');
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+            this.showNotification('Error loading saved posts', 'error');
+        }
+    }
+
+    // Export user data for backup
+    exportUserData() {
+        try {
+            const exportData = {
+                userPosts: this.loadFromStorage('gallery_user_posts') || [],
+                userPhotos: this.userPhotos,
+                userVideos: this.userVideos,
+                likes: this.likes,
+                views: this.views,
+                settings: this.userSettings,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `gallery_backup_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            this.showNotification('Data exported successfully', 'success');
+        } catch (error) {
+            console.error('Error exporting data:', error);
+            this.showNotification('Failed to export data', 'error');
+        }
+    }
+
+    // Import user data from backup
+    importUserData(file) {
+        try {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const importData = JSON.parse(e.target.result);
+                    
+                    // Validate import data
+                    if (!importData.version || !importData.userPosts) {
+                        throw new Error('Invalid backup file format');
+                    }
+                    
+                    // Merge imported data
+                    if (importData.userPosts) {
+                        importData.userPosts.forEach(post => {
+                            if (!this.userPosts.find(p => p.id === post.id)) {
+                                this.userPosts.push(post);
+                                
+                                if (post.type === 'photo') {
+                                    this.userPhotos.push(post);
+                                    this.photos.push(post);
+                                } else if (post.type === 'video') {
+                                    this.userVideos.push(post);
+                                    this.videos.push(post);
+                                }
+                            }
+                        });
+                    }
+                    
+                    // Merge likes and views
+                    Object.assign(this.likes, importData.likes || {});
+                    Object.assign(this.views, importData.views || {});
+                    
+                    // Save imported data
+                    this.saveAllUserData();
+                    this.renderGallery();
+                    this.updateStats();
+                    
+                    this.showNotification(`Imported ${importData.userPosts.length} posts successfully`, 'success');
+                } catch (parseError) {
+                    console.error('Error parsing import file:', parseError);
+                    this.showNotification('Invalid backup file', 'error');
+                }
+            };
+            reader.readAsText(file);
+        } catch (error) {
+            console.error('Error importing data:', error);
+            this.showNotification('Failed to import data', 'error');
+        }
+    }
+
+    // Offer data export when storage is full
+    offerDataExport() {
+        const exportModal = document.createElement('div');
+        exportModal.className = 'modal show';
+        exportModal.innerHTML = `
+            <div class="modal-content">
+                <h3>Storage Full</h3>
+                <p>Your browser's local storage is full. Would you like to export your data as a backup?</p>
+                <div class="modal-actions">
+                    <button onclick="galleryManager.exportUserData(); this.parentElement.parentElement.parentElement.remove();" class="btn-primary">
+                        <i class="fas fa-download"></i> Export Data
+                    </button>
+                    <button onclick="this.parentElement.parentElement.parentElement.remove();" class="btn-secondary">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(exportModal);
+    }
+
     async init() {
-        this.loadDefaultContent();
-        await this.loadDynamicContent(); // Load images from Unsplash
+        // Show gallery immediately with fallback images
         this.renderGallery();
         this.updateStats();
         this.setupEventListeners();
         this.setupMobileMenu();
-        this.setupImageSuggestion(); // Setup Unsplash suggestions
+        this.setupImageSuggestion();
+        this.setupDataManagement();
+
+        // Load user data first (fast)
+        this.loadAllUserData();
+        this.loadDefaultContent();
+        
+        // Show initial gallery with fallback images
+        this.renderGallery();
+        this.updateStats();
+
+        // Test API connection and load dynamic content in background
+        const apiAvailable = await this.unsplashManager.testApiConnection();
+        if (!apiAvailable) {
+            console.warn('Unsplash API not available, using fallback images');
+            this.showNotification('Using demo images - API connection failed', 'info');
+            return; // Skip dynamic loading if API unavailable
+        }
+
+        // Load Unsplash images in background (non-blocking)
+        this.loadDynamicContent().then(() => {
+            this.showNotification('All images loaded from Unsplash!', 'success');
+        }).catch(error => {
+            console.error('Error loading dynamic content:', error);
+            this.showNotification('Some images failed to load from Unsplash', 'warning');
+        });
+    }
+
+    // Setup data management functionality
+    setupDataManagement() {
+        // Add auto-save indicator only (buttons removed)
+        this.createAutoSaveIndicator();
+    }
+
+    // Create auto-save indicator
+    createAutoSaveIndicator() {
+        const indicator = document.createElement('div');
+        indicator.id = 'autoSaveIndicator';
+        indicator.className = 'auto-save-indicator';
+        indicator.innerHTML = '<i class="fas fa-save"></i> Auto-saved';
+        indicator.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        `;
+        document.body.appendChild(indicator);
+    }
+
+    // Show auto-save indicator
+    showAutoSaveIndicator() {
+        const indicator = document.getElementById('autoSaveIndicator');
+        if (indicator) {
+            indicator.style.opacity = '1';
+            setTimeout(() => {
+                indicator.style.opacity = '0';
+            }, 2000);
+        }
+    }
+
+    // Clear all user data
+    clearAllUserData() {
+        if (confirm('Are you sure you want to clear all your posts and data? This action cannot be undone.')) {
+            try {
+                // Clear arrays
+                this.userPhotos = [];
+                this.userVideos = [];
+                this.photos = this.photos.filter(p => !p.isUserContent);
+                this.videos = this.videos.filter(v => !v.isUserContent);
+                
+                // Clear user-specific likes and views
+                Object.keys(this.likes).forEach(key => {
+                    if (key.startsWith('user_')) {
+                        delete this.likes[key];
+                    }
+                });
+                
+                Object.keys(this.views).forEach(key => {
+                    if (key.startsWith('user_')) {
+                        delete this.views[key];
+                    }
+                });
+
+                // Clear localStorage
+                localStorage.removeItem('gallery_user_posts');
+                localStorage.removeItem('gallery_user_photos');
+                localStorage.removeItem('gallery_user_videos');
+                localStorage.removeItem('galleryPhotos');
+                localStorage.removeItem('galleryVideos');
+
+                // Re-save cleaned data
+                this.saveAllUserData();
+                this.renderGallery();
+                this.updateStats();
+
+                this.showNotification('All user data cleared successfully', 'success');
+            } catch (error) {
+                console.error('Error clearing user data:', error);
+                this.showNotification('Error clearing data', 'error');
+            }
+        }
     }
 
     setupMobileMenu() {
@@ -552,70 +1114,80 @@ class GalleryManager {
     }
 
     /**
-     * Load dynamic content from Unsplash based on default titles
+     * Load dynamic content from Unsplash using jQuery REST API calls (OPTIMIZED)
      */
     async loadDynamicContent() {
-        // Load dynamic images for photos
-        for (const photo of this.defaultPhotos) {
-            if (this.loadingImages.has(photo.id)) continue;
+        console.log('Loading dynamic content from Unsplash via jQuery REST API...');
+        
+        // Create array of all content to process
+        const allContent = [...this.defaultPhotos, ...this.defaultVideos];
+        
+        // Create promises for parallel execution
+        const loadPromises = allContent.map(async (item) => {
+            if (this.loadingImages.has(item.id)) return;
             
-            this.loadingImages.add(photo.id);
+            this.loadingImages.add(item.id);
             
             try {
-                const optimizedQuery = this.unsplashManager.optimizeSearchQuery(photo.title);
+                const optimizedQuery = this.unsplashManager.optimizeSearchQuery(item.title);
+                console.log(`Fetching image for "${item.title}" with query: "${optimizedQuery}"`);
+                
                 const images = await this.unsplashManager.searchImages(optimizedQuery, 1);
                 
                 if (images.length > 0) {
                     const image = images[0];
-                    photo.url = image.url;
-                    photo.thumb = image.thumb;
-                    photo.full = image.full;
-                    photo.alt = image.alt;
-                    photo.unsplashAttribution = image;
                     
-                    // Trigger download as per Unsplash API requirements
-                    this.unsplashManager.triggerDownload(image.downloadUrl);
+                    if (item.type === 'video') {
+                        // For videos, update thumbnail
+                        item.thumbnail = image.url;
+                        item.thumb = image.thumb;
+                        item.full = image.full;
+                        item.alt = image.alt;
+                    } else {
+                        // For photos, update main image
+                        item.url = image.url;
+                        item.thumb = image.thumb;
+                        item.full = image.full;
+                        item.alt = image.alt;
+                    }
+                    
+                    item.unsplashAttribution = image;
+                    
+                    // Trigger download as per Unsplash API requirements using jQuery AJAX
+                    await this.unsplashManager.triggerDownload(image.downloadUrl);
+                    console.log(`Updated ${item.type} "${item.title}" with Unsplash image`);
+                    
+                    // Update gallery in real-time as images load
+                    this.renderGallery();
                 }
             } catch (error) {
-                console.error(`Error loading dynamic image for ${photo.title}:`, error);
+                console.error(`Error loading dynamic image for ${item.title}:`, error);
                 // Keep original fallback URL
             } finally {
-                this.loadingImages.delete(photo.id);
+                this.loadingImages.delete(item.id);
+            }
+        });
+        
+        // Execute all promises in parallel with batching to avoid rate limits
+        const batchSize = 3; // Process 3 at a time to avoid overwhelming API
+        for (let i = 0; i < loadPromises.length; i += batchSize) {
+            const batch = loadPromises.slice(i, i + batchSize);
+            await Promise.allSettled(batch); // Use allSettled to prevent one failure from stopping others
+            
+            // Small delay between batches to respect rate limits
+            if (i + batchSize < loadPromises.length) {
+                await new Promise(resolve => setTimeout(resolve, 500)); // 0.5 second delay
             }
         }
-
-        // Load dynamic images for videos (as thumbnails only)
-        for (const video of this.defaultVideos) {
-            if (this.loadingImages.has(video.id)) continue;
-            
-            this.loadingImages.add(video.id);
-            
-            try {
-                const optimizedQuery = this.unsplashManager.optimizeSearchQuery(video.title);
-                const images = await this.unsplashManager.searchImages(optimizedQuery, 1);
-                
-                if (images.length > 0) {
-                    const image = images[0];
-                    video.thumbnail = image.url;
-                    video.thumb = image.thumb;
-                    video.full = image.full;
-                    video.alt = image.alt;
-                    video.unsplashAttribution = image;
-                    
-                    // Trigger download as per Unsplash API requirements
-                    this.unsplashManager.triggerDownload(image.downloadUrl);
-                }
-            } catch (error) {
-                console.error(`Error loading dynamic thumbnail for ${video.title}:`, error);
-                // Keep original fallback URL
-            } finally {
-                this.loadingImages.delete(video.id);
-            }
-        }
+        
+        console.log('Finished loading dynamic content from Unsplash via jQuery REST API');
+        
+        // Final gallery update
+        this.renderGallery();
     }
 
     /**
-     * Load more content from Unsplash - PHOTOS ONLY, NO VIDEOS
+     * Load more content from Unsplash using jQuery REST API - PHOTOS ONLY, NO VIDEOS
      */
     async loadMoreFromUnsplash() {
         const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -627,7 +1199,7 @@ class GalleryManager {
         }
         
         const originalText = loadMoreBtn.innerHTML;
-        loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading photos from Unsplash...';
+        loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading photos from Unsplash via jQuery AJAX...';
         loadMoreBtn.disabled = true;
 
         try {
@@ -643,6 +1215,7 @@ class GalleryManager {
             ];
 
             const randomQuery = queries[Math.floor(Math.random() * queries.length)];
+            console.log(`Loading more content with query: "${randomQuery}" via jQuery AJAX`);
             
             // ONLY load photos - NO videos
             if (this.currentContentType === 'all' || this.currentContentType === 'photo') {
@@ -670,25 +1243,23 @@ class GalleryManager {
 
                         this.defaultPhotos.push(photo);
                         
-                        // Trigger download
+                        // Trigger download using jQuery AJAX
                         this.unsplashManager.triggerDownload(image.downloadUrl);
                     });
 
-                    this.showNotification(`Loaded ${images.length} new photos from Unsplash!`, 'success');
+                    this.showNotification(`Loaded ${images.length} new photos from Unsplash via jQuery AJAX!`, 'success');
+                    console.log(`Successfully loaded ${images.length} new photos via jQuery AJAX`);
                 } else {
                     this.showNotification('No more photos available from Unsplash', 'info');
                 }
             }
 
-            // DO NOT LOAD VIDEOS ANYMORE
-            // Video loading section completely removed
-
             this.renderGallery();
             this.updateStats();
             
         } catch (error) {
-            console.error('Error loading more content:', error);
-            this.showNotification('Error loading more photos from Unsplash. Please try again.', 'error');
+            console.error('Error loading more content via jQuery AJAX:', error);
+            this.showNotification('Error loading more photos from Unsplash via jQuery AJAX. Please try again.', 'error');
         } finally {
             loadMoreBtn.innerHTML = originalText;
             loadMoreBtn.disabled = false;
@@ -712,7 +1283,7 @@ class GalleryManager {
     }
 
     /**
-     * Setup image suggestion functionality for upload
+     * Setup image suggestion functionality for upload using jQuery REST API
      */
     setupImageSuggestion() {
         const titleInput = document.getElementById('photoTitle');
@@ -732,7 +1303,7 @@ class GalleryManager {
             suggestionContainer = document.createElement('div');
             suggestionContainer.id = 'imageSuggestions';
             suggestionContainer.innerHTML = `
-                <h4 style="margin: 15px 0 10px 0; font-size: 14px; color: #333;">Suggested Images from Unsplash:</h4>
+                <h4 style="margin: 15px 0 10px 0; font-size: 14px; color: #333;">Suggested Images from Unsplash via jQuery AJAX:</h4>
                 <div id="imageGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; max-height: 200px; overflow-y: auto;"></div>
             `;
             suggestionContainer.style.display = 'none';
@@ -745,7 +1316,7 @@ class GalleryManager {
             }
         }
 
-        // Debounced image suggestion
+        // Debounced image suggestion using jQuery AJAX
         let suggestionTimeout;
         titleInput.addEventListener('input', () => {
             clearTimeout(suggestionTimeout);
@@ -761,7 +1332,7 @@ class GalleryManager {
     }
 
     /**
-     * Show image suggestions based on title
+     * Show image suggestions based on title using jQuery REST API
      */
     async showImageSuggestions(title) {
         const suggestionContainer = document.getElementById('imageSuggestions');
@@ -771,10 +1342,12 @@ class GalleryManager {
         
         // Show loading state
         suggestionContainer.style.display = 'block';
-        imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Loading suggestions...</div>';
+        imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Loading suggestions from Unsplash via jQuery AJAX...</div>';
         
         try {
             const optimizedQuery = this.unsplashManager.optimizeSearchQuery(title);
+            console.log(`Fetching suggestions for "${title}" with query: "${optimizedQuery}" via jQuery AJAX`);
+            
             const images = await this.unsplashManager.searchImages(optimizedQuery, 8);
             
             if (images.length > 0) {
@@ -811,27 +1384,42 @@ class GalleryManager {
                         const attribution = JSON.parse(img.dataset.attribution);
                         
                         try {
-                            // Convert URL to blob and create file
-                            const response = await fetch(fullUrl);
-                            const blob = await response.blob();
-                            const file = new File([blob], `unsplash-${attribution.id}.jpg`, { type: 'image/jpeg' });
+                            console.log(`Selecting image from Unsplash: ${attribution.id}`);
                             
-                            // Set file to input
-                            const dataTransfer = new DataTransfer();
-                            dataTransfer.items.add(file);
-                            document.getElementById('photoFile').files = dataTransfer.files;
-                            
-                            // Show preview
-                            this.previewFile(file);
-                            
-                            // Hide suggestions
-                            suggestionContainer.style.display = 'none';
-                            
-                            // Trigger download
-                            this.unsplashManager.triggerDownload(downloadUrl);
-                            
-                            // Store attribution for later use
-                            this.selectedImageAttribution = attribution;
+                            // Use jQuery AJAX to fetch image and convert to blob
+                            $.ajax({
+                                url: fullUrl,
+                                method: 'GET',
+                                xhrFields: {
+                                    responseType: 'blob'
+                                },
+                                success: (blob) => {
+                                    const file = new File([blob], `unsplash-${attribution.id}.jpg`, { type: 'image/jpeg' });
+                                    
+                                    // Set file to input
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(file);
+                                    document.getElementById('photoFile').files = dataTransfer.files;
+                                    
+                                    // Show preview
+                                    this.previewFile(file);
+                                    
+                                    // Hide suggestions
+                                    suggestionContainer.style.display = 'none';
+                                    
+                                    // Trigger download using jQuery AJAX
+                                    this.unsplashManager.triggerDownload(downloadUrl);
+                                    
+                                    // Store attribution for later use
+                                    this.selectedImageAttribution = attribution;
+                                    
+                                    console.log(`Successfully selected image ${attribution.id} via jQuery AJAX`);
+                                },
+                                error: (xhr, status, error) => {
+                                    console.error('jQuery AJAX Error selecting image:', error);
+                                    this.showNotification('Error selecting image via jQuery AJAX. Please try again.', 'error');
+                                }
+                            });
                             
                         } catch (error) {
                             console.error('Error selecting image:', error);
@@ -839,12 +1427,14 @@ class GalleryManager {
                         }
                     });
                 });
+                
+                console.log(`Successfully loaded ${images.length} image suggestions via jQuery AJAX`);
             } else {
                 imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No suggestions found</div>';
             }
         } catch (error) {
-            console.error('Error showing suggestions:', error);
-            imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: #red;">Error loading suggestions</div>';
+            console.error('Error showing suggestions via jQuery AJAX:', error);
+            imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">Error loading suggestions via jQuery AJAX</div>';
         }
     }
 
@@ -871,7 +1461,7 @@ class GalleryManager {
             modalTitle.innerHTML = '<i class="fas fa-video"></i> Upload Video';
             uploadArea.classList.add('video');
             fileInput.accept = 'video/*';
-            uploadHint.textContent = 'Supports MP4, MOV, AVI (Max 50MB)';
+            uploadHint.textContent = 'Supports MP4, MOV, AVI (Max 200MB)';
             titleLabel.textContent = 'Video Title';
             uploadBtn.classList.add('video');
             uploadButtonText.textContent = 'Upload Video';
@@ -953,6 +1543,19 @@ class GalleryManager {
                 if (previewVideo) {
                     previewVideo.src = e.target.result;
                     previewVideo.style.display = 'block';
+                    
+                    // Get video duration and generate thumbnail
+                    previewVideo.onloadedmetadata = () => {
+                        const duration = previewVideo.duration;
+                        this.currentVideoDuration = this.formatVideoDuration(duration);
+                        console.log(`Video duration: ${this.currentVideoDuration}`);
+                        
+                        // Generate thumbnail from video
+                        this.generateVideoThumbnail(previewVideo, (thumbnail) => {
+                            this.currentVideoThumbnail = thumbnail;
+                            console.log('Video thumbnail generated');
+                        });
+                    };
                 }
                 previewImg.style.display = 'none';
             }
@@ -966,6 +1569,67 @@ class GalleryManager {
         reader.readAsDataURL(file);
     }
 
+    /**
+     * Generate thumbnail from video file
+     * @param {HTMLVideoElement} video - Video element
+     * @param {Function} callback - Callback function with thumbnail data
+     */
+    generateVideoThumbnail(video, callback) {
+        try {
+            // Create canvas element
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions based on video
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            
+            // Seek to 1 second or 10% of video duration for thumbnail
+            const seekTime = Math.min(1, video.duration * 0.1);
+            video.currentTime = seekTime;
+            
+            video.onseeked = () => {
+                try {
+                    // Draw video frame to canvas
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    
+                    // Convert canvas to blob
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                callback(e.target.result);
+                            };
+                            reader.readAsDataURL(blob);
+                        } else {
+                            console.warn('Failed to generate video thumbnail blob');
+                            callback(null);
+                        }
+                    }, 'image/jpeg', 0.8);
+                } catch (error) {
+                    console.error('Error generating video thumbnail:', error);
+                    callback(null);
+                }
+            };
+        } catch (error) {
+            console.error('Error setting up video thumbnail generation:', error);
+            callback(null);
+        }
+    }
+
+    /**
+     * Format video duration from seconds to MM:SS format
+     * @param {number} seconds - Duration in seconds
+     * @returns {string} Formatted duration
+     */
+    formatVideoDuration(seconds) {
+        if (!seconds || isNaN(seconds)) return '0:00';
+        
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = Math.floor(seconds % 60);
+        return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+    }
+
     validateFile(file) {
         const expectedType = this.currentUploadType === 'video' ? 'video' : 'image';
         
@@ -974,10 +1638,10 @@ class GalleryManager {
             return false;
         }
         
-        const maxSize = expectedType === 'video' ? 50 * 1024 * 1024 : 5 * 1024 * 1024; // 50MB for videos, 5MB for images
+        const maxSize = expectedType === 'video' ? 200 * 1024 * 1024 : 5 * 1024 * 1024; // 200MB for videos, 5MB for images
         
         if (file.size > maxSize) {
-            this.showError(`File size must be less than ${expectedType === 'video' ? '50MB' : '5MB'}`);
+            this.showError(`File size must be less than ${expectedType === 'video' ? '200MB' : '5MB'}`);
             return false;
         }
 
@@ -992,6 +1656,10 @@ class GalleryManager {
         const previewVideo = document.getElementById('previewVideo');
         if (previewVideo) previewVideo.src = '';
         this.selectedImageAttribution = null;
+        
+        // Reset video properties
+        this.currentVideoDuration = '0:00';
+        this.currentVideoThumbnail = null;
     }
 
     handleUpload(e) {
@@ -1019,13 +1687,16 @@ class GalleryManager {
                 views: 0,
                 likes: 0,
                 type: this.currentUploadType,
-                isUserContent: true
+                isUserContent: true,
+                createdAt: Date.now(), // Add timestamp for better tracking
+                fileSize: file.size,
+                fileName: file.name
             };
 
             // Add video-specific properties
             if (this.currentUploadType === 'video') {
-                mediaData.thumbnail = e.target.result; // For now, use video as thumbnail
-                mediaData.duration = '0:00'; // Would need video processing for real duration
+                mediaData.thumbnail = this.currentVideoThumbnail || e.target.result; // Use generated thumbnail or video data
+                mediaData.duration = this.currentVideoDuration || '0:00'; // Use calculated duration
             }
 
             // Add attribution if image was selected from Unsplash
@@ -1059,16 +1730,32 @@ class GalleryManager {
     }
 
     addMedia(mediaData) {
-        if (mediaData.type === 'video') {
-            this.videos.unshift(mediaData);
-        } else {
-            this.photos.unshift(mediaData);
+        try {
+            if (mediaData.type === 'video') {
+                this.videos.unshift(mediaData);
+                this.userVideos.unshift(mediaData);
+            } else {
+                this.photos.unshift(mediaData);
+                this.userPhotos.unshift(mediaData);
+            }
+            
+            // Add to combined user posts array
+            if (!this.userPosts.find(p => p.id === mediaData.id)) {
+                this.userPosts.unshift(mediaData);
+            }
+            
+            // Save all data including the new post
+            this.saveAllUserData();
+            this.renderGallery();
+            this.updateStats();
+            this.showNotification(`${mediaData.type === 'video' ? 'Video' : 'Photo'} uploaded and saved successfully!`, 'success');
+            this.showAutoSaveIndicator();
+            
+            console.log(`Added ${mediaData.type}: ${mediaData.title}`);
+        } catch (error) {
+            console.error('Error adding media:', error);
+            this.showNotification('Error saving media. Please try again.', 'error');
         }
-        
-        this.saveData();
-        this.renderGallery();
-        this.updateStats();
-        this.showNotification(`${mediaData.type === 'video' ? 'Video' : 'Photo'} uploaded successfully!`, 'success');
     }
 
     renderGallery() {
@@ -1110,8 +1797,12 @@ class GalleryManager {
         const attribution = item.unsplashAttribution ? 
             `<div class="unsplash-attribution">${this.unsplashManager.generateAttribution(item.unsplashAttribution)}</div>` : '';
         
+        // Add user content indicator
+        const userIndicator = item.isUserContent ? 
+            `<div class="user-content-indicator"><i class="fas fa-user"></i> Your ${item.type}</div>` : '';
+        
         return `
-            <div class="media-card" data-category="${item.category}" data-type="${item.type}" data-source="${source}" data-index="${index}" data-id="${item.id}">
+            <div class="media-card ${item.isUserContent ? 'user-content' : ''}" data-category="${item.category}" data-type="${item.type}" data-source="${source}" data-index="${index}" data-id="${item.id}">
                 <div class="media-content" onclick="galleryManager.openMediaModal('${item.id}', '${source}')">
                     ${isVideo ? 
                         `<video muted preload="metadata" poster="${item.thumbnail || ''}">
@@ -1124,6 +1815,7 @@ class GalleryManager {
                         <i class="fas fa-${isVideo ? 'video' : 'camera'}"></i> ${isVideo ? 'Video' : 'Photo'}
                     </div>
                     ${isVideo ? `<div class="video-duration">${item.duration}</div>` : ''}
+                    ${userIndicator}
                     <div class="media-overlay">
                         <div class="media-stats">
                             <span><i class="fas fa-eye"></i> ${item.views}</span>
@@ -1270,6 +1962,21 @@ class GalleryManager {
             attributionContainer.style.display = 'none';
         }
         
+        // Show user content indicator in modal
+        let userIndicator = document.getElementById('userContentIndicator');
+        if (media.isUserContent) {
+            if (!userIndicator) {
+                userIndicator = document.createElement('div');
+                userIndicator.id = 'userContentIndicator';
+                userIndicator.className = 'user-content-modal-indicator';
+                photoInfo.appendChild(userIndicator);
+            }
+            userIndicator.innerHTML = `<i class="fas fa-user"></i> Your ${media.type}`;
+            userIndicator.style.display = 'block';
+        } else if (userIndicator) {
+            userIndicator.style.display = 'none';
+        }
+        
         // Update like button state
         const likeBtn = document.getElementById('likePhoto');
         likeBtn.classList.toggle('liked', this.likes[media.id] > 0);
@@ -1321,6 +2028,12 @@ class GalleryManager {
         this.saveData();
         this.saveMediaStats(media);
         
+        // Auto-save user content likes
+        if (media.isUserContent) {
+            this.saveAllUserData();
+            this.showAutoSaveIndicator();
+        }
+        
         // Update UI
         if (element) {
             element.classList.toggle('liked', this.likes[mediaId] > 0);
@@ -1343,14 +2056,30 @@ class GalleryManager {
 
     deleteMedia(mediaId) {
         if (confirm('Are you sure you want to delete this content? This action cannot be undone.')) {
-            this.photos = this.photos.filter(item => item.id !== mediaId);
-            this.videos = this.videos.filter(item => item.id !== mediaId);
-            delete this.likes[mediaId];
-            delete this.views[mediaId];
-            this.saveData();
-            this.renderGallery();
-            this.updateStats();
-            this.showNotification('Content deleted successfully', 'success');
+            try {
+                // Remove from arrays
+                this.photos = this.photos.filter(item => item.id !== mediaId);
+                this.videos = this.videos.filter(item => item.id !== mediaId);
+                this.userPhotos = this.userPhotos.filter(item => item.id !== mediaId);
+                this.userVideos = this.userVideos.filter(item => item.id !== mediaId);
+                this.userPosts = this.userPosts.filter(item => item.id !== mediaId);
+                
+                // Remove stats
+                delete this.likes[mediaId];
+                delete this.views[mediaId];
+                
+                // Save updated data
+                this.saveAllUserData();
+                this.renderGallery();
+                this.updateStats();
+                this.showNotification('Content deleted and saved successfully', 'success');
+                this.showAutoSaveIndicator();
+                
+                console.log(`Deleted media: ${mediaId}`);
+            } catch (error) {
+                console.error('Error deleting media:', error);
+                this.showNotification('Error deleting content', 'error');
+            }
         }
     }
 
@@ -1375,6 +2104,8 @@ class GalleryManager {
         const totalVideos = this.videos.length + this.defaultVideos.length;
         const totalViews = [...this.photos, ...this.videos, ...this.defaultPhotos, ...this.defaultVideos]
                           .reduce((sum, item) => sum + item.views, 0);
+        const userPhotos = this.userPhotos.length;
+        const userVideos = this.userVideos.length;
         
         document.getElementById('totalPhotos').textContent = totalPhotos;
         document.getElementById('totalVideos').textContent = totalVideos;
@@ -1384,6 +2115,22 @@ class GalleryManager {
         document.getElementById('allCount').textContent = totalPhotos + totalVideos;
         document.getElementById('photoCount').textContent = totalPhotos;
         document.getElementById('videoCount').textContent = totalVideos;
+        
+        // Add user content stats if elements exist
+        const userStatsElement = document.getElementById('userStats');
+        if (userStatsElement) {
+            userStatsElement.innerHTML = `
+                <div class="user-stats-item">
+                    <i class="fas fa-user"></i> Your Content: ${userPhotos + userVideos}
+                </div>
+                <div class="user-stats-item">
+                    <i class="fas fa-camera"></i> Your Photos: ${userPhotos}
+                </div>
+                <div class="user-stats-item">
+                    <i class="fas fa-video"></i> Your Videos: ${userVideos}
+                </div>
+            `;
+        }
     }
 
     // Enhanced Load More functionality
@@ -1420,7 +2167,7 @@ class GalleryManager {
         } else {
             // For 'all' or 'photo' views, show load more button
             if (this.displayCount >= filteredContent.length) {
-                loadMoreBtn.innerHTML = '<i class="fas fa-cloud-download-alt"></i> Load More Photos from Unsplash';
+                loadMoreBtn.innerHTML = '<i class="fas fa-cloud-download-alt"></i> Load More Photos from Unsplash via jQuery AJAX';
             } else {
                 const remaining = filteredContent.length - this.displayCount;
                 loadMoreBtn.innerHTML = `<i class="fas fa-plus"></i> Load More (${remaining} remaining)`;
@@ -1633,7 +2380,8 @@ class GalleryManager {
     saveMediaStats(media) {
         if (media.isUserContent) {
             // User content is saved with the main data
-            this.saveData();
+            this.saveAllUserData();
+            this.showAutoSaveIndicator();
         } else {
             // Default content stats saved separately
             this.saveToStorage(media.id + '_views', media.views);
@@ -1652,6 +2400,10 @@ class GalleryManager {
         this.currentUploadType = 'photo';
         this.updateUploadModalForType();
         this.selectedImageAttribution = null;
+        
+        // Reset video properties
+        this.currentVideoDuration = '0:00';
+        this.currentVideoThumbnail = null;
     }
 
     formatDate(dateString) {
@@ -1673,7 +2425,7 @@ class GalleryManager {
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
-            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> 
+            <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle'}"></i> 
             ${message}
         `;
         document.body.appendChild(notification);
@@ -1708,5 +2460,6 @@ function shareOnWhatsApp() {
 // Initialize Gallery
 let galleryManager;
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Initializing Gallery Manager with enhanced localStorage and jQuery REST API integration...');
     galleryManager = new GalleryManager();
 });

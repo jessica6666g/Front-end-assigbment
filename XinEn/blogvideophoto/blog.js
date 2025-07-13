@@ -607,20 +607,12 @@ class BlogManager {
             return; // No changes, don't save
         }
         
-        // Save image data if it exists - store the actual base64 data
-        const imagePreview = document.getElementById('previewImg');
-        if (imagePreview && imagePreview.src && imagePreview.src.startsWith('data:')) {
-            formData.previewImageData = imagePreview.src; // Save the base64 data
-            formData.hasImage = true;
-        } else {
-            formData.hasImage = false;
-        }
-        
+        // REMOVED: Image data saving in draft to prevent restoration
         // Store in memory storage
         this.formDraft = formData;
         this.saveToStorage('blog_form_draft', formData);
         
-        console.log('📁 Draft saved to localStorage');
+        console.log('📁 Draft saved to localStorage (without image data)');
     }
 
     loadFormDraft() {
@@ -646,7 +638,7 @@ class BlogManager {
                 
                 // Load saved values into form fields
                 Object.keys(formData).forEach(key => {
-                    if (key !== 'savedAt' && key !== 'previewImageData' && key !== 'hasImage') {
+                    if (key !== 'savedAt') {
                         const field = document.getElementById(key);
                         if (field && formData[key]) {
                             field.value = formData[key];
@@ -654,14 +646,8 @@ class BlogManager {
                     }
                 });
                 
-                // Restore image preview if exists
-                if (formData.hasImage && formData.previewImageData) {
-                    this.showImagePreview(formData.previewImageData);
-                    console.log('📷 Image preview restored from draft');
-                } else {
-                    // Make sure image preview is hidden if no image in draft
-                    this.hideImagePreview();
-                }
+                // REMOVED: Image preview restoration - always start fresh
+                this.hideImagePreview();
                 
                 // Update word count for excerpt
                 if (formData.postExcerpt) {
@@ -706,9 +692,9 @@ class BlogManager {
         
         if (modalTitle) modalTitle.innerHTML = '<i class="fas fa-edit"></i> Create New Post';
         if (submitText) submitText.textContent = 'Publish';
-        if (blogForm) blogForm.reset();
         
-        this.hideImagePreview();
+        // CRITICAL: Reset form completely when opening modal
+        this.resetFormCompletely();
         
         // FIXED: Check if we have a valid draft before loading
         const savedDraft = this.loadFromStorage('blog_form_draft');
@@ -753,6 +739,53 @@ class BlogManager {
         }, 100);
         
         console.log('✅ Create modal opened - Only X button can close');
+    }
+
+    /**
+     * Completely reset the form to prevent any data restoration
+     */
+    resetFormCompletely() {
+        // Reset the form
+        const blogForm = document.getElementById('blogForm');
+        if (blogForm) {
+            blogForm.reset();
+        }
+        
+        // Clear preview completely
+        this.hideImagePreview();
+        
+        // Clear any error messages
+        const formError = document.getElementById('formError');
+        if (formError) {
+            formError.textContent = '';
+        }
+        
+        // Force clear the file input
+        this.clearFileInputCompletely();
+        
+        console.log('🗑️ Form completely reset');
+    }
+
+    /**
+     * Completely clear the file input to prevent restoration
+     */
+    clearFileInputCompletely() {
+        const fileInput = document.getElementById('postImage');
+        if (fileInput) {
+            // Clear the value
+            fileInput.value = '';
+            
+            // Force clear by creating new input (most reliable method)
+            const newInput = fileInput.cloneNode(true);
+            
+            // Copy all attributes and event listeners
+            newInput.onchange = (e) => this.handleImageUpload(e);
+            
+            // Replace the old input with new one
+            fileInput.parentNode.replaceChild(newInput, fileInput);
+            
+            console.log('🗑️ File input completely cleared and replaced');
+        }
     }
 
     openEditModal(index) {
@@ -838,16 +871,11 @@ class BlogManager {
             (imagePreviewContainer && imagePreviewContainer.style.display === 'block' && imagePreview && imagePreview.src)
         );
         
-        // Also check draft for image data
-        const hasDraftImage = this.formDraft && this.formDraft.hasImage && this.formDraft.previewImageData;
-        
         console.log('🔍 Submit image check:', {
             hasImageFile: imageFile && imageFile.size > 0,
             hasPreviewImage: hasPreviewImage,
-            hasDraftImage: hasDraftImage,
             isEditMode: this.currentEditIndex !== null,
-            previewSrc: imagePreview?.src?.substring(0, 50) + '...',
-            draftImageExists: !!this.formDraft?.previewImageData
+            previewSrc: imagePreview?.src?.substring(0, 50) + '...'
         });
         
         if (imageFile && imageFile.size > 0) {
@@ -868,13 +896,8 @@ class BlogManager {
             reader.readAsDataURL(imageFile);
         } else if (hasPreviewImage) {
             // Use existing preview image
-            console.log('📸 Using restored preview image...');
+            console.log('📸 Using existing preview image...');
             const postData = this.createPostData(formData, imagePreview.src);
-            this.finishSubmission(postData);
-        } else if (hasDraftImage) {
-            // Use image from draft
-            console.log('📸 Using image from draft...');
-            const postData = this.createPostData(formData, this.formDraft.previewImageData);
             this.finishSubmission(postData);
         } else if (this.currentEditIndex !== null) {
             console.log('✏️ Updating post without new image...');
@@ -900,15 +923,13 @@ class BlogManager {
             this.createPost(postData);
         }
         
-        // IMPORTANT: Close modal and reset form after submission
+        // CRITICAL: Close modal and completely reset form after submission
         this.closeModals();
         
         // Reset form to clear any remaining data
-        const blogForm = document.getElementById('blogForm');
-        if (blogForm) {
-            blogForm.reset();
-        }
-        this.hideImagePreview();
+        this.resetFormCompletely();
+        
+        console.log('✅ Form completely reset after submission');
     }
 
     createPostData(formData, image = null) {
@@ -971,20 +992,15 @@ class BlogManager {
                 (imagePreviewContainer && imagePreviewContainer.style.display === 'block' && imagePreview && imagePreview.src)
             );
             
-            // Also check draft for image
-            const hasDraftImage = this.formDraft && this.formDraft.hasImage && this.formDraft.previewImageData;
-            
             console.log('🔍 Comprehensive image validation check:', {
                 hasImageFile: !!imageFile,
                 hasPreviewImage: hasPreviewImage,
-                hasDraftImage: hasDraftImage,
                 previewSrc: imagePreview?.src?.substring(0, 50) + '...',
-                previewDisplay: imagePreviewContainer?.style?.display,
-                draftHasImage: this.formDraft?.hasImage
+                previewDisplay: imagePreviewContainer?.style?.display
             });
             
-            // Check if we have ANY form of image: new file, preview, or draft
-            if (!imageFile && !hasPreviewImage && !hasDraftImage) {
+            // Check if we have ANY form of image: new file or preview
+            if (!imageFile && !hasPreviewImage) {
                 console.log('❌ No image found in any form');
                 if (errorDiv) errorDiv.textContent = 'Featured image is required.';
                 return false;
@@ -1272,13 +1288,7 @@ class BlogManager {
             reader.onload = (e) => {
                 this.showImagePreview(e.target.result);
                 
-                // Save draft when image is uploaded (for new posts only)
-                if (this.currentEditIndex === null) {
-                    // Add a small delay to ensure the preview is set before saving
-                    setTimeout(() => {
-                        this.saveFormDraft();
-                    }, 100);
-                }
+                // REMOVED: Save draft when image is uploaded to prevent restoration
             };
             reader.onerror = (error) => {
                 console.error('Error reading image:', error);
@@ -1300,6 +1310,7 @@ class BlogManager {
     hideImagePreview() {
         const imagePreview = document.getElementById('imagePreview');
         const postImage = document.getElementById('postImage');
+        const previewImg = document.getElementById('previewImg');
         
         if (imagePreview) {
             imagePreview.style.display = 'none';
@@ -1307,17 +1318,18 @@ class BlogManager {
         if (postImage) {
             postImage.value = '';
         }
+        if (previewImg) {
+            previewImg.src = '';
+        }
+        
+        // Force clear the file input
+        this.clearFileInputCompletely();
     }
 
     removeImage() { 
         this.hideImagePreview(); 
         
-        // Also clear from draft if we're in create mode
-        if (this.currentEditIndex === null && this.formDraft) {
-            this.formDraft.hasImage = false;
-            this.formDraft.previewImageData = null;
-            this.saveToStorage('blog_form_draft', this.formDraft);
-        }
+        // REMOVED: Draft clearing since we don't save images in drafts anymore
     }
 
     updateWordCount(e) {
@@ -1490,15 +1502,8 @@ class BlogManager {
 
     clearFormAndDraft() {
         if (confirm('Are you sure you want to clear all form data and saved draft? This cannot be undone.')) {
-            const blogForm = document.getElementById('blogForm');
-            if (blogForm) {
-                blogForm.reset();
-            }
-            
-            this.hideImagePreview();
-            this.updateWordCount({ target: { value: '' } });
+            this.resetFormCompletely();
             this.clearFormDraft();
-            
             this.showNotification('Form and draft cleared successfully', 'success');
         }
     }

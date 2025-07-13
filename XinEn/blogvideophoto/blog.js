@@ -1,7 +1,12 @@
-// Enhanced Blog Manager Class with localStorage for User Posts
+// Enhanced Blog Manager Class with in-memory storage (localStorage replacement)
 class BlogManager {
     constructor() {
-        // Enhanced localStorage operations with fallbacks and error handling
+        // Use localStorage for persistent storage across page refreshes
+        this.storage = {
+            useLocalStorage: true // Flag to indicate we're using localStorage
+        };
+        
+        // Initialize data from in-memory storage
         this.posts = this.loadFromStorage('blog_user_posts') || [];
         this.viewCounts = this.loadFromStorage('blog_view_counts') || {};
         this.formDraft = this.loadFromStorage('blog_form_draft') || null;
@@ -22,28 +27,28 @@ class BlogManager {
         this.init();
     }
 
-    // Enhanced localStorage operations with better error handling and versioning
+    // Enhanced localStorage operations for persistent storage
     loadFromStorage(key) {
         try {
-            const data = localStorage.getItem(key);
-            if (!data) return null;
+            // Use localStorage for persistent storage
+            const dataStr = localStorage.getItem(key);
+            if (!dataStr) return null;
             
-            const parsed = JSON.parse(data);
+            const data = JSON.parse(dataStr);
             
             // Handle versioned data format
-            if (parsed && typeof parsed === 'object' && parsed.version) {
-                return this.migrateDataVersion(parsed, key);
+            if (data && typeof data === 'object' && data.version) {
+                return this.migrateDataVersion(data, key);
             }
             
-            return parsed;
+            return data;
         } catch (error) {
             console.warn(`Error loading ${key} from localStorage:`, error);
-            // Try to recover corrupted data
+            // If localStorage fails, clear corrupted data
             try {
                 localStorage.removeItem(key);
-                this.showNotification(`Recovered from corrupted data in ${key}`, 'warning');
-            } catch (cleanupError) {
-                console.error('Error cleaning up corrupted data:', cleanupError);
+            } catch (clearError) {
+                console.warn('Failed to clear corrupted localStorage item:', clearError);
             }
             return null;
         }
@@ -58,28 +63,24 @@ class BlogManager {
                 data: data
             };
             
-            const serialized = JSON.stringify(versionedData);
+            // Save to localStorage for persistence
+            localStorage.setItem(key, JSON.stringify(versionedData));
             
-            // Check storage quota
-            try {
-                localStorage.setItem(key, serialized);
-                
-                // Schedule auto-save for user posts
-                if (key.includes('user_posts') && this.userSettings.autoSave) {
-                    this.scheduleAutoSave();
-                }
-                
-                console.log(`Successfully saved ${key} to localStorage`);
-            } catch (quotaError) {
-                if (quotaError.name === 'QuotaExceededError') {
-                    this.handleStorageQuotaExceeded(key, data);
-                } else {
-                    throw quotaError;
-                }
+            // Schedule auto-save for user posts
+            if (key.includes('user_posts') && this.userSettings.autoSave) {
+                this.scheduleAutoSave();
             }
+            
+            console.log(`Successfully saved ${key} to localStorage`);
         } catch (error) {
             console.warn(`Error saving ${key} to localStorage:`, error);
-            this.showNotification('Failed to save data locally. Your changes may be lost.', 'warning');
+            
+            // Handle localStorage quota exceeded
+            if (error.name === 'QuotaExceededError') {
+                this.handleStorageQuotaExceeded(key, data);
+            } else {
+                this.showNotification('Failed to save data. Your changes may be lost.', 'warning');
+            }
         }
     }
 
@@ -99,20 +100,21 @@ class BlogManager {
         }
     }
 
-    // Handle storage quota exceeded
+    // Handle localStorage quota exceeded
     handleStorageQuotaExceeded(key, data) {
-        console.warn('LocalStorage quota exceeded, attempting cleanup...');
+        console.warn('localStorage quota exceeded, attempting cleanup...');
         
         try {
-            // Remove old cached data first
+            // Clean up old cached data
             this.cleanupOldCache();
             
             // Try saving again
-            localStorage.setItem(key, JSON.stringify({
+            const versionedData = {
                 version: '1.0',
                 timestamp: Date.now(),
                 data: data
-            }));
+            };
+            localStorage.setItem(key, JSON.stringify(versionedData));
             
             this.showNotification('Storage cleaned up and data saved', 'success');
         } catch (retryError) {
@@ -124,16 +126,18 @@ class BlogManager {
         }
     }
 
-    // Clean up old cached data
+    // Clean up old cached data from localStorage
     cleanupOldCache() {
         const keysToClean = [];
         const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
         
+        // Iterate through all localStorage keys
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key && key.startsWith('blog_cache_')) {
                 try {
-                    const data = JSON.parse(localStorage.getItem(key));
+                    const dataStr = localStorage.getItem(key);
+                    const data = JSON.parse(dataStr);
                     if (data.timestamp && data.timestamp < oneWeekAgo) {
                         keysToClean.push(key);
                     }
@@ -197,7 +201,7 @@ class BlogManager {
             console.log(`Loaded ${savedPosts.length} user posts from localStorage`);
             
             if (savedPosts.length > 0) {
-                this.showNotification(`Restored ${savedPosts.length} saved posts`, 'success');
+                this.showNotification(`Restored ${savedPosts.length} saved posts from localStorage`, 'success');
             }
         } catch (error) {
             console.error('Error loading user data:', error);
@@ -282,7 +286,7 @@ class BlogManager {
         exportModal.innerHTML = `
             <div class="modal-content">
                 <h3>Storage Full</h3>
-                <p>Your browser's local storage is full. Would you like to export your data as a backup?</p>
+                <p>Your browser's memory storage is full. Would you like to export your data as a backup?</p>
                 <div class="modal-actions">
                     <button onclick="blogManager.exportUserData(); this.parentElement.parentElement.parentElement.remove();" class="btn-primary">
                         <i class="fas fa-download"></i> Export Data
@@ -309,7 +313,16 @@ class BlogManager {
                 localStorage.removeItem('blog_user_posts');
                 localStorage.removeItem('blog_view_counts');
                 localStorage.removeItem('blog_form_draft');
-                localStorage.removeItem('blog_user_settings');
+                localStorage.setItem('blog_user_settings', JSON.stringify({
+                    version: '1.0',
+                    timestamp: Date.now(),
+                    data: {
+                        autoSave: true,
+                        showNotifications: true,
+                        defaultCategory: '',
+                        defaultAuthor: ''
+                    }
+                }));
 
                 // Re-save cleaned data
                 this.saveAllUserData();
@@ -465,20 +478,20 @@ class BlogManager {
             };
         }
         
+        // MODIFIED: Only X button can close the modal now
         closeButtons.forEach(btn => {
             if (btn) {
                 btn.onclick = () => {
-                    console.log('❌ Closing modal...');
+                    console.log('❌ Closing modal via X button...');
                     this.closeModals();
                 };
             }
         });
         
+        // REMOVED: Cancel button functionality - button will be hidden/disabled
+        // Cancel button no longer closes the modal
         if (cancelButton) {
-            cancelButton.onclick = () => {
-                console.log('🚫 Cancel button clicked');
-                this.closeModals();
-            };
+            cancelButton.style.display = 'none'; // Hide cancel button
         }
         
         // Form submit handler with null check
@@ -532,14 +545,13 @@ class BlogManager {
             sortSelect.onchange = (e) => this.handleSort(e);
         }
         
-        // Window click handler for modal close
-        window.onclick = (e) => { 
-            if (e.target && e.target.classList && e.target.classList.contains('modal')) {
-                this.closeModals(); 
-            }
-        };
+        // REMOVED: Window click handler for modal close
+        // Users can no longer close modal by clicking outside
         
-        console.log('✅ Event listeners setup complete');
+        // REMOVED: Escape key to close modal
+        // Users can no longer close modal with Escape key
+        
+        console.log('✅ Event listeners setup complete - Only X button can close modal');
     }
 
     setupFormAutoSave() {
@@ -595,13 +607,16 @@ class BlogManager {
             return; // No changes, don't save
         }
         
-        // Also save image if it exists
+        // Save image data if it exists - store the actual base64 data
         const imagePreview = document.getElementById('previewImg');
-        if (imagePreview && imagePreview.src && !imagePreview.src.includes('data:')) {
-            formData.previewImageSrc = imagePreview.src;
+        if (imagePreview && imagePreview.src && imagePreview.src.startsWith('data:')) {
+            formData.previewImageData = imagePreview.src; // Save the base64 data
+            formData.hasImage = true;
+        } else {
+            formData.hasImage = false;
         }
         
-        // Store in localStorage
+        // Store in memory storage
         this.formDraft = formData;
         this.saveToStorage('blog_form_draft', formData);
         
@@ -609,7 +624,7 @@ class BlogManager {
     }
 
     loadFormDraft() {
-        // Load from localStorage
+        // Load from memory storage
         const savedDraft = this.loadFromStorage('blog_form_draft');
         if (savedDraft) {
             this.formDraft = savedDraft;
@@ -631,7 +646,7 @@ class BlogManager {
                 
                 // Load saved values into form fields
                 Object.keys(formData).forEach(key => {
-                    if (key !== 'savedAt' && key !== 'previewImageSrc') {
+                    if (key !== 'savedAt' && key !== 'previewImageData' && key !== 'hasImage') {
                         const field = document.getElementById(key);
                         if (field && formData[key]) {
                             field.value = formData[key];
@@ -640,8 +655,12 @@ class BlogManager {
                 });
                 
                 // Restore image preview if exists
-                if (formData.previewImageSrc) {
-                    this.showImagePreview(formData.previewImageSrc);
+                if (formData.hasImage && formData.previewImageData) {
+                    this.showImagePreview(formData.previewImageData);
+                    console.log('📷 Image preview restored from draft');
+                } else {
+                    // Make sure image preview is hidden if no image in draft
+                    this.hideImagePreview();
                 }
                 
                 // Update word count for excerpt
@@ -691,8 +710,26 @@ class BlogManager {
         
         this.hideImagePreview();
         
-        // Try to load saved draft
-        const draftLoaded = this.loadFormDraft();
+        // FIXED: Check if we have a valid draft before loading
+        const savedDraft = this.loadFromStorage('blog_form_draft');
+        
+        // Only load draft if it exists and is not too old
+        let draftLoaded = false;
+        if (savedDraft && savedDraft.savedAt) {
+            const savedDate = new Date(savedDraft.savedAt);
+            const now = new Date();
+            const daysDiff = (now - savedDate) / (1000 * 60 * 60 * 24);
+            
+            if (daysDiff <= 7) {
+                draftLoaded = this.loadFormDraft();
+                console.log('🔄 Draft loaded:', draftLoaded);
+            } else {
+                console.log('🗑️ Draft too old, clearing...');
+                this.clearFormDraft();
+            }
+        } else {
+            console.log('📝 No valid draft found, starting fresh');
+        }
         
         // If no draft loaded, update word count for empty form
         if (!draftLoaded) {
@@ -715,7 +752,7 @@ class BlogManager {
             }
         }, 100);
         
-        console.log('✅ Create modal opened');
+        console.log('✅ Create modal opened - Only X button can close');
     }
 
     openEditModal(index) {
@@ -776,7 +813,7 @@ class BlogManager {
         this.currentEditIndex = null;
     }
 
-    // Form submit handler
+    // Form submit handler - ENHANCED VERSION
     handleSubmit(e) {
         console.log('🚀 HANDLE SUBMIT CALLED!');
         e.preventDefault();
@@ -792,21 +829,34 @@ class BlogManager {
         const formData = new FormData(e.target);
         const imageFile = formData.get('postImage');
         
+        // ENHANCED: Multiple ways to detect existing image
+        const imagePreview = document.getElementById('previewImg');
+        const imagePreviewContainer = document.getElementById('imagePreview');
+        const hasPreviewImage = (
+            (imagePreview && imagePreview.src && imagePreview.src.startsWith('data:')) ||
+            (imagePreview && imagePreview.src && imagePreview.src.length > 100) ||
+            (imagePreviewContainer && imagePreviewContainer.style.display === 'block' && imagePreview && imagePreview.src)
+        );
+        
+        // Also check draft for image data
+        const hasDraftImage = this.formDraft && this.formDraft.hasImage && this.formDraft.previewImageData;
+        
+        console.log('🔍 Submit image check:', {
+            hasImageFile: imageFile && imageFile.size > 0,
+            hasPreviewImage: hasPreviewImage,
+            hasDraftImage: hasDraftImage,
+            isEditMode: this.currentEditIndex !== null,
+            previewSrc: imagePreview?.src?.substring(0, 50) + '...',
+            draftImageExists: !!this.formDraft?.previewImageData
+        });
+        
         if (imageFile && imageFile.size > 0) {
-            console.log('📸 Processing image file...');
+            console.log('📸 Processing new image file...');
             const reader = new FileReader();
             reader.onload = (readerEvent) => {
-                console.log('📸 Image loaded, creating post data...');
+                console.log('📸 New image loaded, creating post data...');
                 const postData = this.createPostData(formData, readerEvent.target.result);
-                
-                if (this.currentEditIndex !== null) {
-                    console.log('✏️ Updating existing post...');
-                    this.updatePost(this.currentEditIndex, postData);
-                } else {
-                    console.log('➕ Creating new post...');
-                    this.createPost(postData);
-                }
-                this.closeModals();
+                this.finishSubmission(postData);
             };
             
             reader.onerror = (error) => {
@@ -816,19 +866,49 @@ class BlogManager {
             };
             
             reader.readAsDataURL(imageFile);
+        } else if (hasPreviewImage) {
+            // Use existing preview image
+            console.log('📸 Using restored preview image...');
+            const postData = this.createPostData(formData, imagePreview.src);
+            this.finishSubmission(postData);
+        } else if (hasDraftImage) {
+            // Use image from draft
+            console.log('📸 Using image from draft...');
+            const postData = this.createPostData(formData, this.formDraft.previewImageData);
+            this.finishSubmission(postData);
         } else if (this.currentEditIndex !== null) {
             console.log('✏️ Updating post without new image...');
             const postData = this.createPostData(formData);
             if (this.posts[this.currentEditIndex] && this.posts[this.currentEditIndex].image) {
                 postData.image = this.posts[this.currentEditIndex].image;
             }
-            this.updatePost(this.currentEditIndex, postData);
-            this.closeModals();
+            this.finishSubmission(postData);
         } else {
-            console.log('❌ No image provided for new post');
+            console.log('❌ No image provided for new post (this should not happen after validation)');
             const formError = document.getElementById('formError');
             if (formError) formError.textContent = 'Please select an image file.';
         }
+    }
+    
+    // Helper method to finish submission process
+    finishSubmission(postData) {
+        if (this.currentEditIndex !== null) {
+            console.log('✏️ Updating existing post...');
+            this.updatePost(this.currentEditIndex, postData);
+        } else {
+            console.log('➕ Creating new post...');
+            this.createPost(postData);
+        }
+        
+        // IMPORTANT: Close modal and reset form after submission
+        this.closeModals();
+        
+        // Reset form to clear any remaining data
+        const blogForm = document.getElementById('blogForm');
+        if (blogForm) {
+            blogForm.reset();
+        }
+        this.hideImagePreview();
     }
 
     createPostData(formData, image = null) {
@@ -852,6 +932,7 @@ class BlogManager {
         return postData;
     }
 
+    // FIXED: Enhanced form validation with better preview detection
     validateForm() {
         console.log('🔍 Validating form...');
         const errorDiv = document.getElementById('formError');
@@ -877,19 +958,45 @@ class BlogManager {
             }
         }
         
-        // Image validation for new posts
+        // FIXED: Enhanced image validation for new posts
         if (this.currentEditIndex === null) {
             const imageFile = document.getElementById('postImage')?.files[0];
-            if (!imageFile) {
-                console.log('❌ No image file selected');
+            const imagePreview = document.getElementById('previewImg');
+            const imagePreviewContainer = document.getElementById('imagePreview');
+            
+            // Multiple ways to check for existing image
+            const hasPreviewImage = (
+                (imagePreview && imagePreview.src && imagePreview.src.startsWith('data:')) ||
+                (imagePreview && imagePreview.src && imagePreview.src.length > 100) ||
+                (imagePreviewContainer && imagePreviewContainer.style.display === 'block' && imagePreview && imagePreview.src)
+            );
+            
+            // Also check draft for image
+            const hasDraftImage = this.formDraft && this.formDraft.hasImage && this.formDraft.previewImageData;
+            
+            console.log('🔍 Comprehensive image validation check:', {
+                hasImageFile: !!imageFile,
+                hasPreviewImage: hasPreviewImage,
+                hasDraftImage: hasDraftImage,
+                previewSrc: imagePreview?.src?.substring(0, 50) + '...',
+                previewDisplay: imagePreviewContainer?.style?.display,
+                draftHasImage: this.formDraft?.hasImage
+            });
+            
+            // Check if we have ANY form of image: new file, preview, or draft
+            if (!imageFile && !hasPreviewImage && !hasDraftImage) {
+                console.log('❌ No image found in any form');
                 if (errorDiv) errorDiv.textContent = 'Featured image is required.';
                 return false;
             }
-            if (!this.validateImageFile(imageFile)) {
+            
+            // If there's a new file, validate it
+            if (imageFile && !this.validateImageFile(imageFile)) {
                 console.log('❌ Image file validation failed');
                 return false;
             }
         } else {
+            // For editing existing posts
             const imageFile = document.getElementById('postImage')?.files[0];
             if (imageFile && !this.validateImageFile(imageFile)) {
                 console.log('❌ Image file validation failed');
@@ -926,21 +1033,22 @@ class BlogManager {
             this.saveAllUserData();
             this.renderPosts();
             this.updateStats();
-            this.showNotification('Post published and saved successfully!', 'success');
+            this.showNotification('Post published and saved to localStorage!', 'success');
             this.showAutoSaveIndicator();
             
-            // Clear form draft after successful publish
+            // FIXED: Clear form draft after successful publish - MUST be after saving
             this.clearFormDraft();
             
             console.log('✅ Post created and saved successfully');
+            console.log('🗑️ Draft cleared after successful publish');
             
-            // jQuery AJAX API call to create post
+            // jQuery AJAX API call to create post (optional, may fail)
             if (window.apiManager) {
                 apiManager.createPost({
                     title: postData.title,
                     body: postData.excerpt,
                     userId: 1
-                });
+                }).catch(error => console.log('API call failed (non-critical):', error));
             }
         } catch (error) {
             console.error('Error creating post:', error);
@@ -963,7 +1071,7 @@ class BlogManager {
             // Save to localStorage immediately
             this.saveAllUserData();
             this.renderPosts();
-            this.showNotification('Post updated and saved successfully!', 'success');
+            this.showNotification('Post updated and saved to localStorage!', 'success');
             this.showAutoSaveIndicator();
         } catch (error) {
             console.error('Error updating post:', error);
@@ -983,7 +1091,7 @@ class BlogManager {
                 this.saveAllUserData();
                 this.renderPosts();
                 this.updateStats();
-                this.showNotification('Post deleted and saved successfully!', 'error');
+                this.showNotification('Post deleted and saved to localStorage!', 'error');
                 this.showAutoSaveIndicator();
             } catch (error) {
                 console.error('Error deleting post:', error);
@@ -1161,7 +1269,17 @@ class BlogManager {
                 return; 
             }
             const reader = new FileReader();
-            reader.onload = (e) => this.showImagePreview(e.target.result);
+            reader.onload = (e) => {
+                this.showImagePreview(e.target.result);
+                
+                // Save draft when image is uploaded (for new posts only)
+                if (this.currentEditIndex === null) {
+                    // Add a small delay to ensure the preview is set before saving
+                    setTimeout(() => {
+                        this.saveFormDraft();
+                    }, 100);
+                }
+            };
             reader.onerror = (error) => {
                 console.error('Error reading image:', error);
             };
@@ -1193,6 +1311,13 @@ class BlogManager {
 
     removeImage() { 
         this.hideImagePreview(); 
+        
+        // Also clear from draft if we're in create mode
+        if (this.currentEditIndex === null && this.formDraft) {
+            this.formDraft.hasImage = false;
+            this.formDraft.previewImageData = null;
+            this.saveToStorage('blog_form_draft', this.formDraft);
+        }
     }
 
     updateWordCount(e) {
@@ -1386,8 +1511,12 @@ class BlogManager {
         const postExcerpt = document.getElementById('postExcerpt')?.value || '';
         const postTags = document.getElementById('postTags')?.value || '';
         
-        // Check if any field has content
-        return authorName.trim() || postCategory || postTitle.trim() || postExcerpt.trim() || postTags.trim();
+        // Also check for image preview
+        const imagePreview = document.getElementById('previewImg');
+        const hasPreviewImage = imagePreview && imagePreview.src && imagePreview.src.startsWith('data:');
+        
+        // Check if any field has content or if there's an image
+        return authorName.trim() || postCategory || postTitle.trim() || postExcerpt.trim() || postTags.trim() || hasPreviewImage;
     }
 }
 
@@ -1404,12 +1533,13 @@ class APIManager {
                 url: `${this.baseURL}/posts`,
                 method: 'GET',
                 dataType: 'json',
+                timeout: 10000,
                 success: (data) => {
                     console.log('✅ jQuery GET - Posts fetched:', data.length);
                     resolve(data.slice(0, 5)); // Return first 5 posts
                 },
                 error: (xhr, status, error) => {
-                    console.error('❌ jQuery GET Error:', error);
+                    console.log('⚠️ jQuery GET Error (non-critical):', error);
                     resolve([]);
                 }
             });
@@ -1425,12 +1555,13 @@ class APIManager {
                 contentType: 'application/json',
                 data: JSON.stringify(postData),
                 dataType: 'json',
+                timeout: 10000,
                 success: (data) => {
                     console.log('✅ jQuery POST - Post created:', data);
                     resolve(data);
                 },
                 error: (xhr, status, error) => {
-                    console.error('❌ jQuery POST Error:', error);
+                    console.log('⚠️ jQuery POST Error (non-critical):', error);
                     resolve(null);
                 }
             });
@@ -1440,7 +1571,6 @@ class APIManager {
     // PUT - Update post using jQuery AJAX  
     async updatePost(id, postData) {
         return new Promise((resolve, reject) => {
-            // Wrap in try-catch to handle potential errors gracefully
             try {
                 $.ajax({
                     url: `${this.baseURL}/posts/${id}`,
@@ -1448,15 +1578,20 @@ class APIManager {
                     contentType: 'application/json',
                     data: JSON.stringify(postData),
                     dataType: 'json',
-                    timeout: 10000, // Add timeout
+                    timeout: 10000,
                     success: (data) => {
                         console.log('✅ jQuery PUT - Post updated:', data);
                         resolve(data);
                     },
                     error: (xhr, status, error) => {
-                        console.log('⚠️ jQuery PUT Error (non-critical):', error);
-                        // Don't reject, just resolve with null to prevent app crash
-                        resolve(null);
+                        // JSONPlaceholder limitation: PUT to new post IDs (>100) returns 500
+                        if (xhr.status === 500 && id > 100) {
+                            console.log('ℹ️ jQuery PUT - JSONPlaceholder limitation: simulating update for post ID', id);
+                            resolve({ id: id, ...postData, message: 'Simulated update' });
+                        } else {
+                            console.log(`⚠️ jQuery PUT Error (non-critical): ${error} (Status: ${xhr.status})`);
+                            resolve(null);
+                        }
                     }
                 });
             } catch (error) {
@@ -1495,34 +1630,48 @@ class APIManager {
         console.log('🎯 Demonstrating jQuery AJAX CRUD Operations...');
         
         try {
-            // CREATE (POST)
+            // READ (GET) - Start with reading existing posts
+            const posts = await this.fetchPosts();
+            console.log('✅ READ: Fetched posts count:', posts.length);
+            
+            // CREATE (POST) - This will work on JSONPlaceholder
             const newPost = await this.createPost({
-                title: 'Test Post via jQuery',
-                body: 'This post was created using jQuery AJAX',
+                title: 'Test Post via jQuery AJAX',
+                body: 'This post was created using jQuery AJAX for demo purposes',
                 userId: 1
             });
-            console.log('Created:', newPost);
             
-            // READ (GET)
-            const posts = await this.fetchPosts();
-            console.log('Fetched posts count:', posts.length);
-            
-            // UPDATE (PUT) - Handle gracefully if it fails
-            if (newPost && newPost.id) {
-                const updatedPost = await this.updatePost(newPost.id, {
-                    id: newPost.id,
-                    title: 'Updated Post via jQuery',
-                    body: 'This post was updated using jQuery AJAX',
+            if (newPost) {
+                console.log('✅ CREATE: Post created with ID:', newPost.id);
+                
+                // UPDATE (PUT) - Use existing post ID (1-100 are valid on JSONPlaceholder)
+                const existingPostId = 1; // Use a known existing post ID
+                const updatedPost = await this.updatePost(existingPostId, {
+                    id: existingPostId,
+                    title: 'Updated Post via jQuery AJAX',
+                    body: 'This post was updated using jQuery AJAX for demo purposes',
                     userId: 1
                 });
-                console.log('Updated:', updatedPost);
                 
-                // DELETE - Handle gracefully if it fails
-                const deleted = await this.deletePost(newPost.id);
-                console.log('Deleted successfully:', deleted);
+                if (updatedPost) {
+                    console.log('✅ UPDATE: Post updated successfully');
+                } else {
+                    console.log('ℹ️ UPDATE: Simulated update (JSONPlaceholder limitation)');
+                }
+                
+                // DELETE - Use existing post ID  
+                const deleted = await this.deletePost(existingPostId);
+                if (deleted) {
+                    console.log('✅ DELETE: Post deletion simulated successfully');
+                } else {
+                    console.log('ℹ️ DELETE: Simulated deletion (JSONPlaceholder limitation)');
+                }
+            } else {
+                console.log('ℹ️ CREATE: Post creation simulated (JSONPlaceholder returns mock ID)');
             }
             
-            console.log('✅ jQuery AJAX CRUD demonstration complete!');
+            console.log('🎉 jQuery AJAX CRUD demonstration complete!');
+            console.log('📝 Note: JSONPlaceholder is a mock API - changes are simulated, not persisted');
             
         } catch (error) {
             console.log('⚠️ CRUD demonstration had issues (non-critical):', error);

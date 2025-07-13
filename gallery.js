@@ -839,10 +839,7 @@ class GalleryManager {
         document.getElementById('photoFile').onchange = (e) => this.handleFileSelect(e);
         document.getElementById('removePreview').onclick = () => this.removePreview();
 
-        // Upload tabs within modal
-        document.querySelectorAll('.upload-tab').forEach(tab => {
-            tab.onclick = (e) => this.handleUploadTab(e);
-        });
+        // REMOVED: Upload tabs event listeners (no tabs needed)
 
         // Content type tabs
         document.querySelectorAll('.content-tab').forEach(tab => {
@@ -1438,14 +1435,9 @@ class GalleryManager {
         }
     }
 
-    handleUploadTab(e) {
-        e.preventDefault();
-        document.querySelectorAll('.upload-tab').forEach(tab => tab.classList.remove('active'));
-        e.target.classList.add('active');
-        this.currentUploadType = e.target.dataset.type;
-        this.updateUploadModalForType();
-    }
+    // REMOVED: handleUploadTab method (no tabs needed)
 
+    // SIMPLIFIED: Update modal to match selected type (no tabs)
     updateUploadModalForType() {
         const modalHeader = document.getElementById('uploadModalHeader');
         const modalTitle = document.getElementById('uploadModalTitle');
@@ -1485,6 +1477,7 @@ class GalleryManager {
         this.renderGallery();
     }
 
+    // SIMPLIFIED: Open upload modal (no tabs)
     openUploadModal(type) {
         this.currentUploadType = type;
         this.updateUploadModalForType();
@@ -2390,13 +2383,13 @@ class GalleryManager {
         }
     }
 
+    // SIMPLIFIED: Reset upload form (no tabs)
     resetUploadForm() {
         document.getElementById('uploadForm').reset();
         this.removePreview();
         document.getElementById('uploadError').textContent = '';
-        // Reset to photo tab
-        document.querySelectorAll('.upload-tab').forEach(tab => tab.classList.remove('active'));
-        document.querySelector('.upload-tab[data-type="photo"]').classList.add('active');
+        
+        // Reset to photo by default
         this.currentUploadType = 'photo';
         this.updateUploadModalForType();
         this.selectedImageAttribution = null;

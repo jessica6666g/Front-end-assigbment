@@ -693,8 +693,9 @@ class GalleryManager {
         this.updateStats();
         this.setupEventListeners();
         this.setupMobileMenu();
-        this.setupImageSuggestion();
+        // REMOVED: Image suggestion setup
         this.setupDataManagement();
+        this.setupURLHandling(); // Add URL handling for direct image links
 
         // Load user data first (fast)
         this.loadAllUserData();
@@ -757,6 +758,39 @@ class GalleryManager {
             setTimeout(() => {
                 indicator.style.opacity = '0';
             }, 2000);
+        }
+    }
+
+    // Setup URL handling for direct image links
+    setupURLHandling() {
+        // Check if URL contains a view parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const viewId = urlParams.get('view');
+        
+        if (viewId) {
+            // Wait a bit for content to load then open the specific media
+            setTimeout(() => {
+                const media = [...this.photos, ...this.videos, ...this.defaultPhotos, ...this.defaultVideos]
+                             .find(item => item.id === decodeURIComponent(viewId));
+                
+                if (media) {
+                    const source = media.isUserContent ? 'user' : 'default';
+                    this.openMediaModal(media.id, source);
+                    console.log(`Opened media from URL: ${media.title}`);
+                } else {
+                    console.warn(`Media not found for ID: ${viewId}`);
+                    // Try again after dynamic content loads
+                    setTimeout(() => {
+                        const retryMedia = [...this.photos, ...this.videos, ...this.defaultPhotos, ...this.defaultVideos]
+                                         .find(item => item.id === decodeURIComponent(viewId));
+                        if (retryMedia) {
+                            const source = retryMedia.isUserContent ? 'user' : 'default';
+                            this.openMediaModal(retryMedia.id, source);
+                            console.log(`Opened media from URL (retry): ${retryMedia.title}`);
+                        }
+                    }, 3000);
+                }
+            }, 1000);
         }
     }
 
@@ -829,7 +863,7 @@ class GalleryManager {
         document.getElementById('uploadBtn').onclick = () => this.openUploadModal('photo');
         document.getElementById('uploadVideoBtn').onclick = () => this.openUploadModal('video');
         
-        // Modal close buttons
+        // Modal close buttons - ONLY close button works
         document.querySelectorAll('.close').forEach(btn => {
             btn.onclick = () => this.closeModals();
         });
@@ -838,8 +872,6 @@ class GalleryManager {
         document.getElementById('uploadForm').onsubmit = (e) => this.handleUpload(e);
         document.getElementById('photoFile').onchange = (e) => this.handleFileSelect(e);
         document.getElementById('removePreview').onclick = () => this.removePreview();
-
-        // REMOVED: Upload tabs event listeners (no tabs needed)
 
         // Content type tabs
         document.querySelectorAll('.content-tab').forEach(tab => {
@@ -874,11 +906,8 @@ class GalleryManager {
         // Keyboard navigation
         document.onkeydown = (e) => this.handleKeyboard(e);
 
-        // Window click to close modals
-        window.onclick = (e) => {
-            if (e.target.classList.contains('modal')) this.closeModals();
-        };
-
+        // REMOVED: Window click to close modals - only X button can close
+        
         // Cancel button
         const cancelBtn = document.querySelector('.btn-cancel');
         if (cancelBtn) {
@@ -1279,164 +1308,6 @@ class GalleryManager {
         }
     }
 
-    /**
-     * Setup image suggestion functionality for upload using jQuery REST API
-     */
-    setupImageSuggestion() {
-        const titleInput = document.getElementById('photoTitle');
-        
-        if (!titleInput) return; // Exit if element doesn't exist
-
-        // Add image suggestion container to upload modal
-        const uploadModal = document.getElementById('uploadModal');
-        if (!uploadModal) return; // Exit if modal doesn't exist
-
-        const formContainer = uploadModal.querySelector('.upload-form');
-        if (!formContainer) return; // Exit if container doesn't exist
-
-        // Check if suggestion container already exists
-        let suggestionContainer = document.getElementById('imageSuggestions');
-        if (!suggestionContainer) {
-            suggestionContainer = document.createElement('div');
-            suggestionContainer.id = 'imageSuggestions';
-            suggestionContainer.innerHTML = `
-                <h4 style="margin: 15px 0 10px 0; font-size: 14px; color: #333;">Suggested Images from Unsplash via jQuery AJAX:</h4>
-                <div id="imageGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; max-height: 200px; overflow-y: auto;"></div>
-            `;
-            suggestionContainer.style.display = 'none';
-            // Insert after the first form row
-            const firstFormRow = formContainer.querySelector('.form-row');
-            if (firstFormRow) {
-                firstFormRow.insertAdjacentElement('afterend', suggestionContainer);
-            } else {
-                formContainer.appendChild(suggestionContainer);
-            }
-        }
-
-        // Debounced image suggestion using jQuery AJAX
-        let suggestionTimeout;
-        titleInput.addEventListener('input', () => {
-            clearTimeout(suggestionTimeout);
-            suggestionTimeout = setTimeout(async () => {
-                const title = titleInput.value.trim();
-                if (title.length > 3 && this.currentUploadType === 'photo') {
-                    await this.showImageSuggestions(title);
-                } else {
-                    suggestionContainer.style.display = 'none';
-                }
-            }, 1000);
-        });
-    }
-
-    /**
-     * Show image suggestions based on title using jQuery REST API
-     */
-    async showImageSuggestions(title) {
-        const suggestionContainer = document.getElementById('imageSuggestions');
-        const imageGrid = document.getElementById('imageGrid');
-        
-        if (!suggestionContainer || !imageGrid) return;
-        
-        // Show loading state
-        suggestionContainer.style.display = 'block';
-        imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">Loading suggestions from Unsplash via jQuery AJAX...</div>';
-        
-        try {
-            const optimizedQuery = this.unsplashManager.optimizeSearchQuery(title);
-            console.log(`Fetching suggestions for "${title}" with query: "${optimizedQuery}" via jQuery AJAX`);
-            
-            const images = await this.unsplashManager.searchImages(optimizedQuery, 8);
-            
-            if (images.length > 0) {
-                imageGrid.innerHTML = images.map(image => `
-                    <div class="suggestion-item" style="cursor: pointer; position: relative; transition: transform 0.2s;">
-                        <img src="${image.thumb}" alt="${image.alt}" 
-                             style="width: 100%; height: 100px; object-fit: cover; border-radius: 4px; border: 2px solid transparent;"
-                             data-full-url="${image.url}"
-                             data-download-url="${image.downloadUrl}"
-                             data-attribution='${JSON.stringify(image)}'>
-                        <div style="font-size: 10px; color: #666; margin-top: 2px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                            ${image.photographer}
-                        </div>
-                    </div>
-                `).join('');
-                
-                // Add click handlers for image selection
-                imageGrid.querySelectorAll('.suggestion-item').forEach(item => {
-                    const img = item.querySelector('img');
-                    
-                    item.addEventListener('mouseenter', () => {
-                        item.style.transform = 'scale(1.05)';
-                        img.style.border = '2px solid #007bff';
-                    });
-                    
-                    item.addEventListener('mouseleave', () => {
-                        item.style.transform = 'scale(1)';
-                        img.style.border = '2px solid transparent';
-                    });
-                    
-                    item.addEventListener('click', async () => {
-                        const fullUrl = img.dataset.fullUrl;
-                        const downloadUrl = img.dataset.downloadUrl;
-                        const attribution = JSON.parse(img.dataset.attribution);
-                        
-                        try {
-                            console.log(`Selecting image from Unsplash: ${attribution.id}`);
-                            
-                            // Use jQuery AJAX to fetch image and convert to blob
-                            $.ajax({
-                                url: fullUrl,
-                                method: 'GET',
-                                xhrFields: {
-                                    responseType: 'blob'
-                                },
-                                success: (blob) => {
-                                    const file = new File([blob], `unsplash-${attribution.id}.jpg`, { type: 'image/jpeg' });
-                                    
-                                    // Set file to input
-                                    const dataTransfer = new DataTransfer();
-                                    dataTransfer.items.add(file);
-                                    document.getElementById('photoFile').files = dataTransfer.files;
-                                    
-                                    // Show preview
-                                    this.previewFile(file);
-                                    
-                                    // Hide suggestions
-                                    suggestionContainer.style.display = 'none';
-                                    
-                                    // Trigger download using jQuery AJAX
-                                    this.unsplashManager.triggerDownload(downloadUrl);
-                                    
-                                    // Store attribution for later use
-                                    this.selectedImageAttribution = attribution;
-                                    
-                                    console.log(`Successfully selected image ${attribution.id} via jQuery AJAX`);
-                                },
-                                error: (xhr, status, error) => {
-                                    console.error('jQuery AJAX Error selecting image:', error);
-                                    this.showNotification('Error selecting image via jQuery AJAX. Please try again.', 'error');
-                                }
-                            });
-                            
-                        } catch (error) {
-                            console.error('Error selecting image:', error);
-                            this.showNotification('Error selecting image. Please try again.', 'error');
-                        }
-                    });
-                });
-                
-                console.log(`Successfully loaded ${images.length} image suggestions via jQuery AJAX`);
-            } else {
-                imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: #666;">No suggestions found</div>';
-            }
-        } catch (error) {
-            console.error('Error showing suggestions via jQuery AJAX:', error);
-            imageGrid.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">Error loading suggestions via jQuery AJAX</div>';
-        }
-    }
-
-    // REMOVED: handleUploadTab method (no tabs needed)
-
     // SIMPLIFIED: Update modal to match selected type (no tabs)
     updateUploadModalForType() {
         const modalHeader = document.getElementById('uploadModalHeader');
@@ -1483,9 +1354,6 @@ class GalleryManager {
         this.updateUploadModalForType();
         document.getElementById('uploadModal').style.display = 'block';
         document.body.style.overflow = 'hidden';
-        
-        // Setup image suggestions after modal is shown
-        setTimeout(() => this.setupImageSuggestion(), 100);
     }
 
     closeModals() {
@@ -1493,12 +1361,6 @@ class GalleryManager {
             modal.style.display = 'none';
         });
         document.body.style.overflow = 'auto';
-        
-        // Hide image suggestions when closing modals
-        const suggestionContainer = document.getElementById('imageSuggestions');
-        if (suggestionContainer) {
-            suggestionContainer.style.display = 'none';
-        }
     }
 
     handleFileSelect(e) {
@@ -1551,12 +1413,6 @@ class GalleryManager {
                     };
                 }
                 previewImg.style.display = 'none';
-            }
-            
-            // Hide suggestions when showing preview
-            const suggestionContainer = document.getElementById('imageSuggestions');
-            if (suggestionContainer) {
-                suggestionContainer.style.display = 'none';
             }
         };
         reader.readAsDataURL(file);
@@ -2177,7 +2033,7 @@ class GalleryManager {
         }
     }
 
-    // Enhanced Share functionality with Copy Link
+    // Enhanced Share functionality with Copy Link - FIXED FOR WHATSAPP
     shareMedia(mediaId) {
         let media;
         
@@ -2201,8 +2057,11 @@ class GalleryManager {
             return;
         }
 
-        const shareText = `Check out this amazing ${media.type} from Malaysia: "${media.title}" - ${media.description}`;
-        const shareUrl = window.location.href;
+        // Create clean URL for this image/video - NO ENCODING
+        const baseUrl = window.location.origin + window.location.pathname;
+        const shareUrl = `${baseUrl}?view=${mediaId}`;
+        // Just use the media title as share text
+        const shareText = media.title;
 
         // Show share options modal
         this.showShareOptions(media, shareText, shareUrl);
@@ -2227,7 +2086,7 @@ class GalleryManager {
                     <button class="share-option twitter" onclick="galleryManager.shareToTwitter('${encodeURIComponent(shareText)}', '${encodeURIComponent(shareUrl)}')">
                         <i class="fab fa-twitter"></i> Twitter
                     </button>
-                    <button class="share-option whatsapp" onclick="galleryManager.shareToWhatsApp('${encodeURIComponent(shareText)}')">
+                    <button class="share-option whatsapp" onclick="galleryManager.shareToWhatsApp('${encodeURIComponent(shareText)}', '${encodeURIComponent(shareUrl)}')">
                         <i class="fab fa-whatsapp"></i> WhatsApp
                     </button>
                     <button class="share-option copy" onclick="galleryManager.copyToClipboard('${shareUrl}')">
@@ -2268,8 +2127,24 @@ class GalleryManager {
         this.closeShareModal();
     }
 
-    shareToWhatsApp(text) {
-        window.open(`https://wa.me/?text=${text}`, '_blank');
+    // FIXED: WhatsApp sharing function to create clickable links
+    shareToWhatsApp(text, url) {
+        // Decode the parameters to get clean text and URL
+        const cleanText = decodeURIComponent(text);
+        const cleanUrl = decodeURIComponent(url);
+        
+        // IMPORTANT: Encode the FULL URL first to handle special characters like : and ?
+        const encodedUrl = encodeURIComponent(cleanUrl);
+        
+        // Then encode the entire message (text + encoded URL)
+        const fullMessage = `${cleanText} ${cleanUrl}`;
+        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+        
+        console.log('Original URL:', cleanUrl);
+        console.log('Full Message:', fullMessage);
+        console.log('WhatsApp URL:', whatsappUrl);
+        
+        window.open(whatsappUrl, '_blank');
         this.closeShareModal();
     }
 

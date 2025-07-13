@@ -2129,22 +2129,18 @@ class GalleryManager {
 
     // FIXED: WhatsApp sharing function to create clickable links
     shareToWhatsApp(text, url) {
-        // Decode the parameters to get clean text and URL
+        // Decode the parameters first
         const cleanText = decodeURIComponent(text);
         const cleanUrl = decodeURIComponent(url);
         
-        // IMPORTANT: Encode the FULL URL first to handle special characters like : and ?
-        const encodedUrl = encodeURIComponent(cleanUrl);
+        // Follow the same pattern as shareOnWhatsApp() function
+        const whatsappText = encodeURIComponent(cleanText + ' ' + cleanUrl);
+        window.open(`https://wa.me/?text=${whatsappText}`, '_blank');
         
-        // Then encode the entire message (text + encoded URL)
-        const fullMessage = `${cleanText} ${cleanUrl}`;
-        const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(fullMessage)}`;
+        console.log('Clean Text:', cleanText);
+        console.log('Clean URL:', cleanUrl);
+        console.log('Final WhatsApp Text:', cleanText + ' ' + cleanUrl);
         
-        console.log('Original URL:', cleanUrl);
-        console.log('Full Message:', fullMessage);
-        console.log('WhatsApp URL:', whatsappUrl);
-        
-        window.open(whatsappUrl, '_blank');
         this.closeShareModal();
     }
 
